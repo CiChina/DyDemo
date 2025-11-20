@@ -1,0 +1,502 @@
+[
+  {
+    "id": 1,
+    "nickname": "周杰伦",
+    "avatarResId": 0,
+    "authenticationLabelId": 0,
+    "isMutual": true,
+    "isSpecialFollow": true,
+    "customRemark": null,
+    "followTimestamp": 1762005655316
+  },
+  {
+    "id": 2,
+    "nickname": "王心凌",
+    "avatarResId": 0,
+    "authenticationLabelId": 0,
+    "isMutual": false,
+    "isSpecialFollow": false,
+    "customRemark": "CyndiWong909",
+    "followTimestamp": 1762515694242
+  },
+  {
+    "id": 3,
+    "nickname": "张韶涵",
+    "avatarResId": 0,
+    "authenticationLabelId": 0,
+    "isMutual": true,
+    "isSpecialFollow": false,
+    "customRemark": null,
+    "followTimestamp": 1762420477270
+  },
+  {
+    "id": 4,
+    "nickname": "五月天",
+    "avatarResId": 0,
+    "authenticationLabelId": 0,
+    "isMutual": false,
+    "isSpecialFollow": false,
+    "customRemark": null,
+    "followTimestamp": 1761682182524
+  },
+  {
+    "id": 5,
+    "nickname": "林俊杰",
+    "avatarResId": 0,
+    "authenticationLabelId": 0,
+    "isMutual": false,
+    "isSpecialFollow": true,
+    "customRemark": "已选你吧唧",
+    "followTimestamp": 1762619194297
+  },
+  {
+    "id": 6,
+    "nickname": "薛之谦",
+    "avatarResId": 0,
+    "authenticationLabelId": 0,
+    "isMutual": false,
+    "isSpecialFollow": false,
+    "customRemark": null,
+    "followTimestamp": 1763072570991
+  },
+  {
+    "id": 7,
+    "nickname": "用户 007",
+    "avatarResId": 0,
+    "authenticationLabelId": 0,
+    "isMutual": true,
+    "isSpecialFollow": false,
+    "customRemark": "互关好友",
+    "followTimestamp": 1763144498383
+  },
+  {
+    "id": 8,
+    "nickname": "Compose 爱好者",
+    "avatarResId": 0,
+    "authenticationLabelId": 0,
+    "isMutual": false,
+    "isSpecialFollow": true,
+    "customRemark": null,
+    "followTimestamp": 1763181461114
+  },
+  {
+    "id": 9,
+    "nickname": "Kotlin 狂热者",
+    "avatarResId": 0,
+    "authenticationLabelId": 0,
+    "isMutual": true,
+    "isSpecialFollow": false,
+    "customRemark": null,
+    "followTimestamp": 1762369075017
+  },
+  {
+    "id": 10,
+    "nickname": "Jetpack 全家桶",
+    "avatarResId": 0,
+    "authenticationLabelId": 0,
+    "isMutual": false,
+    "isSpecialFollow": true,
+    "customRemark": "测试备注 10",
+    "followTimestamp": 1762836806143
+  },
+  {
+    "id": 11,
+    "nickname": "数据流探索者",
+    "avatarResId": 0,
+    "authenticationLabelId": 0,
+    "isMutual": true,
+    "isSpecialFollow": false,
+    "customRemark": null,
+    "followTimestamp": 1761494958286
+  },
+  {
+    "id": 12,
+    "nickname": "Hilt 依赖注入",
+    "avatarResId": 0,
+    "authenticationLabelId": 0,
+    "isMutual": false,
+    "isSpecialFollow": true,
+    "customRemark": null,
+    "followTimestamp": 1761844551291
+  },
+  {
+    "id": 13,
+    "nickname": "Room 数据库大师",
+    "avatarResId": 0,
+    "authenticationLabelId": 0,
+    "isMutual": true,
+    "isSpecialFollow": false,
+    "customRemark": "重要的",
+    "followTimestamp": 1763111362448
+  },
+  {
+    "id": 14,
+    "nickname": "协程并发专家",
+    "avatarResId": 0,
+    "authenticationLabelId": 0,
+    "isMutual": false,
+    "isSpecialFollow": false,
+    "customRemark": null,
+    "followTimestamp": 1762463482928
+  },
+  {
+    "id": 15,
+    "nickname": "MVVM 架构实践",
+    "avatarResId": 0,
+    "authenticationLabelId": 0,
+    "isMutual": true,
+    "isSpecialFollow": true,
+    "customRemark": "架构参考",
+    "followTimestamp": 1761850181666
+  },
+  {
+    "id": 16,
+    "nickname": "用户 016",
+    "avatarResId": 0,
+    "authenticationLabelId": 0,
+    "isMutual": false,
+    "isSpecialFollow": false,
+    "customRemark": null,
+    "followTimestamp": 1762116455057
+  },
+  {
+    "id": 17,
+    "nickname": "用户 017",
+    "avatarResId": 0,
+    "authenticationLabelId": 0,
+    "isMutual": true,
+    "isSpecialFollow": false,
+    "customRemark": null,
+    "followTimestamp": 1762255151098
+  },
+  {
+    "id": 18,
+    "nickname": "用户 018",
+    "avatarResId": 0,
+    "authenticationLabelId": 0,
+    "isMutual": false,
+    "isSpecialFollow": true,
+    "customRemark": "关注",
+    "followTimestamp": 1762298581493
+  },
+  {
+    "id": 19,
+    "nickname": "用户 019",
+    "avatarResId": 0,
+    "authenticationLabelId": 0,
+    "isMutual": true,
+    "isSpecialFollow": false,
+    "customRemark": null,
+    "followTimestamp": 1762076895550
+  },
+  {
+    "id": 20,
+    "nickname": "用户 020",
+    "avatarResId": 0,
+    "authenticationLabelId": 0,
+    "isMutual": false,
+    "isSpecialFollow": false,
+    "customRemark": null,
+    "followTimestamp": 1761284076957
+  },
+  {
+    "id": 21,
+    "nickname": "用户 021",
+    "avatarResId": 0,
+    "authenticationLabelId": 0,
+    "isMutual": true,
+    "isSpecialFollow": true,
+    "customRemark": "特别关注",
+    "followTimestamp": 1762745338357
+  },
+  {
+    "id": 22,
+    "nickname": "用户 022",
+    "avatarResId": 0,
+    "authenticationLabelId": 0,
+    "isMutual": false,
+    "isSpecialFollow": false,
+    "customRemark": null,
+    "followTimestamp": 1761480390910
+  },
+  {
+    "id": 23,
+    "nickname": "用户 023",
+    "avatarResId": 0,
+    "authenticationLabelId": 0,
+    "isMutual": true,
+    "isSpecialFollow": true,
+    "customRemark": null,
+    "followTimestamp": 1761401089748
+  },
+  {
+    "id": 24,
+    "nickname": "用户 024",
+    "avatarResId": 0,
+    "authenticationLabelId": 0,
+    "isMutual": false,
+    "isSpecialFollow": false,
+    "customRemark": null,
+    "followTimestamp": 1762470439373
+  },
+  {
+    "id": 25,
+    "nickname": "用户 025",
+    "avatarResId": 0,
+    "authenticationLabelId": 0,
+    "isMutual": true,
+    "isSpecialFollow": false,
+    "customRemark": "重要客户",
+    "followTimestamp": 1762817520918
+  },
+  {
+    "id": 26,
+    "nickname": "用户 026",
+    "avatarResId": 0,
+    "authenticationLabelId": 0,
+    "isMutual": false,
+    "isSpecialFollow": true,
+    "customRemark": null,
+    "followTimestamp": 1763094038272
+  },
+  {
+    "id": 27,
+    "nickname": "用户 027",
+    "avatarResId": 0,
+    "authenticationLabelId": 0,
+    "isMutual": true,
+    "isSpecialFollow": false,
+    "customRemark": null,
+    "followTimestamp": 1761532358702
+  },
+  {
+    "id": 28,
+    "nickname": "用户 028",
+    "avatarResId": 0,
+    "authenticationLabelId": 0,
+    "isMutual": false,
+    "isSpecialFollow": false,
+    "customRemark": null,
+    "followTimestamp": 1762791426259
+  },
+  {
+    "id": 29,
+    "nickname": "用户 029",
+    "avatarResId": 0,
+    "authenticationLabelId": 0,
+    "isMutual": true,
+    "isSpecialFollow": true,
+    "customRemark": "项目经理",
+    "followTimestamp": 1762509632345
+  },
+  {
+    "id": 30,
+    "nickname": "用户 030",
+    "avatarResId": 0,
+    "authenticationLabelId": 0,
+    "isMutual": false,
+    "isSpecialFollow": false,
+    "customRemark": null,
+    "followTimestamp": 1761330738069
+  },
+  {
+    "id": 31,
+    "nickname": "用户 031",
+    "avatarResId": 0,
+    "authenticationLabelId": 0,
+    "isMutual": true,
+    "isSpecialFollow": false,
+    "customRemark": null,
+    "followTimestamp": 1763052765779
+  },
+  {
+    "id": 32,
+    "nickname": "用户 032",
+    "avatarResId": 0,
+    "authenticationLabelId": 0,
+    "isMutual": false,
+    "isSpecialFollow": true,
+    "customRemark": null,
+    "followTimestamp": 1761395766765
+  },
+  {
+    "id": 33,
+    "nickname": "用户 033",
+    "avatarResId": 0,
+    "authenticationLabelId": 0,
+    "isMutual": true,
+    "isSpecialFollow": false,
+    "customRemark": "VIP",
+    "followTimestamp": 1763575893873
+  },
+  {
+    "id": 34,
+    "nickname": "用户 034",
+    "avatarResId": 0,
+    "authenticationLabelId": 0,
+    "isMutual": false,
+    "isSpecialFollow": false,
+    "customRemark": null,
+    "followTimestamp": 1762265209544
+  },
+  {
+    "id": 35,
+    "nickname": "用户 035",
+    "avatarResId": 0,
+    "authenticationLabelId": 0,
+    "isMutual": true,
+    "isSpecialFollow": true,
+    "customRemark": null,
+    "followTimestamp": 1761105595192
+  },
+  {
+    "id": 36,
+    "nickname": "用户 036",
+    "avatarResId": 0,
+    "authenticationLabelId": 0,
+    "isMutual": false,
+    "isSpecialFollow": false,
+    "customRemark": null,
+    "followTimestamp": 1761455779274
+  },
+  {
+    "id": 37,
+    "nickname": "用户 037",
+    "avatarResId": 0,
+    "authenticationLabelId": 0,
+    "isMutual": true,
+    "isSpecialFollow": false,
+    "customRemark": "互关",
+    "followTimestamp": 1762448346329
+  },
+  {
+    "id": 38,
+    "nickname": "用户 038",
+    "avatarResId": 0,
+    "authenticationLabelId": 0,
+    "isMutual": false,
+    "isSpecialFollow": true,
+    "customRemark": null,
+    "followTimestamp": 1761563798261
+  },
+  {
+    "id": 39,
+    "nickname": "用户 039",
+    "avatarResId": 0,
+    "authenticationLabelId": 0,
+    "isMutual": true,
+    "isSpecialFollow": false,
+    "customRemark": null,
+    "followTimestamp": 1762111760214
+  },
+  {
+    "id": 40,
+    "nickname": "用户 040",
+    "avatarResId": 0,
+    "authenticationLabelId": 0,
+    "isMutual": false,
+    "isSpecialFollow": false,
+    "customRemark": null,
+    "followTimestamp": 1763140333465
+  },
+  {
+    "id": 41,
+    "nickname": "用户 041",
+    "avatarResId": 0,
+    "authenticationLabelId": 0,
+    "isMutual": true,
+    "isSpecialFollow": true,
+    "customRemark": "重要人物",
+    "followTimestamp": 1762321889927
+  },
+  {
+    "id": 42,
+    "nickname": "用户 042",
+    "avatarResId": 0,
+    "authenticationLabelId": 0,
+    "isMutual": false,
+    "isSpecialFollow": false,
+    "customRemark": null,
+    "followTimestamp": 1761664890783
+  },
+  {
+    "id": 43,
+    "nickname": "用户 043",
+    "avatarResId": 0,
+    "authenticationLabelId": 0,
+    "isMutual": true,
+    "isSpecialFollow": false,
+    "customRemark": null,
+    "followTimestamp": 1762524359235
+  },
+  {
+    "id": 44,
+    "nickname": "用户 044",
+    "avatarResId": 0,
+    "authenticationLabelId": 0,
+    "isMutual": false,
+    "isSpecialFollow": true,
+    "customRemark": null,
+    "followTimestamp": 1762628084185
+  },
+  {
+    "id": 45,
+    "nickname": "用户 045",
+    "avatarResId": 0,
+    "authenticationLabelId": 0,
+    "isMutual": true,
+    "isSpecialFollow": false,
+    "customRemark": "测试数据",
+    "followTimestamp": 1761089491914
+  },
+  {
+    "id": 46,
+    "nickname": "用户 046",
+    "avatarResId": 0,
+    "authenticationLabelId": 0,
+    "isMutual": false,
+    "isSpecialFollow": false,
+    "customRemark": null,
+    "followTimestamp": 1761111188713
+  },
+  {
+    "id": 47,
+    "nickname": "用户 047",
+    "avatarResId": 0,
+    "authenticationLabelId": 0,
+    "isMutual": true,
+    "isSpecialFollow": true,
+    "customRemark": null,
+    "followTimestamp": 1762497221601
+  },
+  {
+    "id": 48,
+    "nickname": "用户 048",
+    "avatarResId": 0,
+    "authenticationLabelId": 0,
+    "isMutual": false,
+    "isSpecialFollow": false,
+    "customRemark": null,
+    "followTimestamp": 1761840025292
+  },
+  {
+    "id": 49,
+    "nickname": "用户 049",
+    "avatarResId": 0,
+    "authenticationLabelId": 0,
+    "isMutual": true,
+    "isSpecialFollow": false,
+    "customRemark": null,
+    "followTimestamp": 1762776411637
+  },
+  {
+    "id": 50,
+    "nickname": "最终用户 050",
+    "avatarResId": 0,
+    "authenticationLabelId": 0,
+    "isMutual": false,
+    "isSpecialFollow": true,
+    "customRemark": "收尾用户",
+    "followTimestamp": 1763053049930
+  }
+]
