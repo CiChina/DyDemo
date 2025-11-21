@@ -81,4 +81,9 @@ interface UserDao {
      */
     @Query("UPDATE following_users SET followTimestamp = :timestamp WHERE id = :userId")
     suspend fun updateFollowTimestamp(userId: Int, timestamp: Long?)
+
+    //特别关注
+    @Query("UPDATE following_users SET isSpecialFollow = :isSpecialFollow WHERE id = :userId")
+    suspend fun updateSpecialFollowStatus(userId: Int, isSpecialFollow: Boolean)
+
 }

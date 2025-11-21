@@ -1,6 +1,8 @@
 package com.example.dydemo.ui.components
 
+import android.annotation.SuppressLint
 import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -19,6 +21,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.painter.BitmapPainter
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 
 import androidx.compose.ui.res.painterResource
@@ -31,8 +37,10 @@ import com.example.dydemo.ui.theme.DY_InputBackground
 import com.example.dydemo.ui.theme.DY_LightGray
 import com.example.dydemo.ui.theme.DY_MediumGray
 import com.example.dydemo.ui.theme.DY_White
+import com.example.dydemo.ui.utils.getBitmapFromDrawable
 
 
+@SuppressLint("LocalContextResourcesRead")
 @Composable
 fun UserListItem(
     user: User,
@@ -66,10 +74,21 @@ fun UserListItem(
     val isPending = pendingState != null
 
     // 3. 决定按钮的样式
-
     // 如果 currentIsFollowing 为 true (已关注或待定关注)，显示“已关注”
+    val dbIsMutual = user.isMutual
     // 如果 currentIsFollowing 为 false (待定取关)，显示“关注”
-    val displayButtonText = if (currentIsFollowing) "已关注" else "关注"
+    val displayButtonText = if (currentIsFollowing) {
+        // 如果处于 '已关注' 状态 (稳定或待定关注)
+        if (dbIsMutual && !isPending) {
+            // 只有当用户是互关状态，且当前没有待定操作（即稳定在互关状态）时，显示“互相关注”
+            "互相关注"
+        } else {
+            "已关注"
+        }
+    } else {
+        // 如果处于 '关注' 状态 (待定取关或实际取关)
+        "关注"
+    }
 
     // 如果 currentIsFollowing 为 true，按钮是灰底；如果为 false (待定取关)，按钮是红底。
     val containerColor = if (currentIsFollowing) Color.Gray.copy(alpha = 0.5f) else Color.Red
@@ -84,21 +103,48 @@ fun UserListItem(
             .padding(horizontal = 16.dp, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // 1. 头像
-        // 实际应用中应该使用 Coil 或 Glide 加载，这里使用本地资源占位
-        // Image(painter = painterResource(id = user.avatarResId), ...)
+        // --- 1. 头像 ---
         Box(
             modifier = Modifier
                 .size(64.dp)
                 .clip(CircleShape)
-                .background(DY_InputBackground) // 占位背景色
+                .background(DY_InputBackground) // 占位背景色，作为图片加载失败时的背景
         ) {
-            // 占位符，实际应加载图片
-            Text(
-                text = user.nickname.first().toString(),
-                color = Color.White,
-                modifier = Modifier.align(Alignment.Center)
-            )
+            val avatarBitmap = remember(user.avatarResId) {
+                if (user.avatarResId > 0) {
+                    val resName = "rand_avatar_${user.avatarResId.toString().padStart(2, '0')}"
+
+                    // 1. 查找资源 ID
+                    val actualResId = context.resources.getIdentifier(
+                        resName, "drawable", context.packageName
+                    )
+
+                    if (actualResId > 0) {
+                        // 这里会使用默认的 sizePx = 128
+                        return@remember getBitmapFromDrawable(context, actualResId)
+                    }
+                }
+                null // ID 无效或未找到
+            }
+
+            if (avatarBitmap != null) {
+                // 使用 BitmapPainter 显示 Bitmap
+                Image(
+                    painter = BitmapPainter(avatarBitmap.asImageBitmap()), // ✅ 使用 BitmapPainter
+                    contentDescription = "用户头像",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize(),
+                )
+            } else {
+                // 占位符 Text
+                Text(
+                    text = user.nickname.firstOrNull()?.toString() ?: "",
+                    color = Color.White,
+                    modifier = Modifier.align(Alignment.Center),
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
         }
 
         Spacer(modifier = Modifier.width(12.dp))
@@ -126,11 +172,11 @@ fun UserListItem(
                 )
 
                 // 互关/特别关注图标 (保持不变)
-                if (user.isMutual) {
-                    Spacer(modifier = Modifier.width(4.dp))
-                    // Icon(painter = painterResource(id = R.drawable.ic_mutual), ...) // 互关图标
-                    Text("互关", color = DY_LightGray, fontSize = 10.sp)
-                }
+//                if (user.isMutual) {
+//                    Spacer(modifier = Modifier.width(4.dp))
+//                    // Icon(painter = painterResource(id = R.drawable.ic_mutual), ...) // 互关图标
+//                    Text("互关", color = DY_LightGray, fontSize = 10.sp)
+//                }
                 if (user.isSpecialFollow) {
                     Spacer(modifier = Modifier.width(4.dp))
                     // Icon(painter = painterResource(id = R.drawable.ic_bell), ...) // 铃铛图标
@@ -163,7 +209,9 @@ fun UserListItem(
                 contentColor = contentColor
             ),
             // 添加一个可视的标记，指示它是待定状态 (例如：轻微透明度)
-            modifier = Modifier.alpha(if (isPending) 0.7f else 1.0f)
+            modifier = Modifier
+                .width(80.dp)
+                .alpha(if (isPending) 1.0f else 1.0f)
         ) {
             Text(
                 text = displayButtonText,

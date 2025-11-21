@@ -72,6 +72,11 @@ class UserRepository @Inject constructor(
         }
     }
 
+    suspend fun setSpecialFollow(userId: Int, isSpecialFollow: Boolean) {
+        // ... 数据库操作：根据 isSpecialFollow 参数设置数据库中的状态
+        userDao.updateSpecialFollowStatus(userId, isSpecialFollow)
+    }
+
     suspend fun unfollowUser(userId: Int) {
         userDao.deleteById(userId)
     }

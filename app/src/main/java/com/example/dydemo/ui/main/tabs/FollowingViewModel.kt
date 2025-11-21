@@ -126,12 +126,58 @@ class FollowingViewModel @Inject constructor(
             userRepository.unfollowUser(userId)
         }
     }
-
+    // 原始的特别关注修改函数
     fun onToggleSpecialFollow(userId: Int) {
         viewModelScope.launch {
             userRepository.toggleSpecialFollow(userId)
         }
     }
+    // 【核心修正】修改 onToggleSpecialFollow 以支持乐观更新
+    /**
+     * 切换用户的特别关注状态，并进行乐观更新。
+     * @param userId 目标用户ID
+     * @param isChecked 用户期望的新状态 (true 或 false)
+     */
+    fun onToggleSpecialFollow(userId: Int, isChecked: Boolean) {
+
+        // 1. **乐观更新 (Optimistic Update)**：立即更新 UI State，触发 Switch 视觉变化
+        _uiState.update { currentState ->
+            // 遍历用户列表 (followingUsers)，找到目标用户并更新 isSpecialFollow
+            val updatedUsers = currentState.followingUsers.map { user ->
+                if (user.id == userId) {
+                    user.copy(isSpecialFollow = isChecked) // 更新目标用户的状态
+                } else {
+                    user
+                }
+            }
+            // 返回新的 UI State，其中包含更新后的用户列表
+            currentState.copy(followingUsers = updatedUsers)
+        }
+
+        // 2. 启动后台协程来更新数据库/网络
+        viewModelScope.launch {
+            try {
+                // 注意：假设您已将 Repository 方法修改为 setSpecialFollow 或类似名称
+                userRepository.setSpecialFollow(userId, isChecked)
+            } catch (e: Exception) {
+                // 3. **回滚 (Rollback)**：如果更新失败，将状态回滚到旧值
+                _uiState.update { currentState ->
+                    val rolledBackUsers = currentState.followingUsers.map { user ->
+                        if (user.id == userId) {
+                            // 回滚到相反的状态
+                            user.copy(isSpecialFollow = !isChecked)
+                        } else {
+                            user
+                        }
+                    }
+                    currentState.copy(followingUsers = rolledBackUsers)
+                }
+                // TODO: 可以在这里添加代码来显示错误提示
+            }
+        }
+    }
+    // 【原有的 onToggleSpecialFollow 已被替换，但我们仍需确保旧的 onToggleSpecialFollow 不存在或已修改】
+    // 旧的 onToggleSpecialFollow 已经被我们新的 with (userId: Int, isChecked: Boolean) 替换。
 
     fun onUpdateRemark(userId: Int, newRemark: String) {
         viewModelScope.launch {

@@ -48,6 +48,7 @@ fun FollowingScreen(
 
     var showActionDialog by remember { mutableStateOf(false) }
     var selectedUser by remember { mutableStateOf<User?>(null) }
+    var selectedUserId by remember { mutableStateOf<Int?>(null) }
 
     // 1. 创建 PullToRefreshState
     val pullToRefreshState = rememberPullToRefreshState()
