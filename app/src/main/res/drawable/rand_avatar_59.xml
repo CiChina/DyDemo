@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="2000px"
+    android:height="2000px"
+    android:viewportWidth="2000"
+    android:viewportHeight="2000">
+    
+        <item>
+            <shape android:shape="rectangle">
+                <solid android:color="#121212"/>
+            </shape>
+        </item>
+    
+        <item android:left="250px" android:top="0px" android:right="1500px" android:bottom="1750px">
+            <shape android:shape="rectangle">
+                <solid android:color="#d75f70"/>
+            </shape>
+        </item>
+        <item android:left="500px" android:top="0px" android:right="1250px" android:bottom="1750px">
+            <shape android:shape="rectangle">
+                <solid android:color="#9dcb4f"/>
+            </shape>
+        </item>
+        <item android:left="1250px" android:top="0px" android:right="500px" android:bottom="1750px">
+            <shape android:shape="rectangle">
+                <solid android:color="#633d7b"/>
+            </shape>
+        </item>
+        <item android:left="1500px" android:top="0px" android:right="250px" android:bottom="1750px">
+            <shape android:shape="rectangle">
+                <solid android:color="#a8b063"/>
+            </shape>
+        </item>
+        <item android:left="0px" android:top="250px" android:right="1750px" android:bottom="1500px">
+            <shape android:shape="rectangle">
+                <solid android:color="#0d82a2"/>
+            </shape>
+        </item>
+        <item android:left="250px" android:top="250px" android:right="1500px" android:bottom="1500px">
+            <shape android:shape="rectangle">
+                <solid android:color="#786872"/>
+            </shape>
+        </item>
+        <item android:left="750px" android:top="250px" android:right="1000px" android:bottom="1500px">
+            <shape android:shape="rectangle">
+                <solid android:color="#27eba0"/>
+            </shape>
+        </item>
+        <item android:left="1000px" android:top="250px" android:right="750px" android:bottom="1500px">
+            <shape android:shape="rectangle">
+                <solid android:color="#c9ad94"/>
+            </shape>
+        </item>
+        <item android:left="1500px" android:top="250px" android:right="250px" android:bottom="1500px">
+            <shape android:shape="rectangle">
+                <solid android:color="#818491"/>
+            </shape>
+        </item>
+        <item android:left="1750px" android:top="250px" android:right="0px" android:bottom="1500px">
+            <shape android:shape="rectangle">
+                <solid android:color="#b234f7"/>
+            </shape>
+        </item>
+        <item android:left="0px" android:top="500px" android:right="1750px" android:bottom="1250px">
+            <shape android:shape="rectangle">
+                <solid android:color="#46eff6"/>
+            </shape>
+        </item>
+        <item android:left="500px" android:top="500px" android:right="1250px" android:bottom="1250px">
+            <shape android:shape="rectangle">
+                <solid android:color="#898baf"/>
+            </shape>
+        </item>
+        <item android:left="750px" android:top="500px" android:right="1000px" android:bottom="1250px">
+            <shape android:shape="rectangle">
+                <solid android:color="#51a53b"/>
+            </shape>
+        </item>
+        <item android:left="1000px" android:top="500px" android:right="750px" android:bottom="1250px">
+            <shape android:shape="rectangle">
+                <solid android:color="#d24e0b"/>
+            </shape>
+        </item>
+        <item android:left="1250px" android:top="500px" android:right="500px" android:bottom="1250px">
+            <shape android:shape="rectangle">
+                <solid android:color="#8288c3"/>
+            </shape>
+        </item>
+        <item android:left="1750px" android:top="500px" android:right="0px" android:bottom="1250px">
+            <shape android:shape="rectangle">
+                <solid android:color="#f745a6"/>
+            </shape>
+        </item>
+        <item android:left="0px" android:top="750px" android:right="1750px" android:bottom="1000px">
+            <shape android:shape="rectangle">
+                <solid android:color="#efe0f2"/>
+            </shape>
+        </item>
+        <item android:left="250px" android:top="750px" android:right="1500px" android:bottom="1000px">
+            <shape android:shape="rectangle">
+                <solid android:color="#169dbc"/>
+            </shape>
+        </item>
+        <item android:left="1500px" android:top="750px" android:right="250px" android:bottom="1000px">
+            <shape android:shape="rectangle">
+                <solid android:color="#89ab26"/>
+            </shape>
+        </item>
+        <item android:left="1750px" android:top="750px" android:right="0px" android:bottom="1000px">
+            <shape android:shape="rectangle">
+                <solid android:color="#e38856"/>
+            </shape>
+        </item>
+        <item android:left="0px" android:top="1000px" android:right="1750px" android:bottom="750px">
+            <shape android:shape="rectangle">
+                <solid android:color="#b9cd70"/>
+            </shape>
+        </item>
+        <item android:left="500px" android:top="1000px" android:right="1250px" android:bottom="750px">
+            <shape android:shape="rectangle">
+                <solid android:color="#037c6c"/>
+            </shape>
+        </item>
+        <item android:left="750px" android:top="1000px" android:right="1000px" android:bottom="750px">
+            <shape android:shape="rectangle">
+                <solid android:color="#9233c6"/>
+            </shape>
+        </item>
+        <item android:left="1000px" android:top="1000px" android:right="750px" android:bottom="750px">
+            <shape android:shape="rectangle">
+                <solid android:color="#cb9de8"/>
+            </shape>
+        </item>
+        <item android:left="1250px" android:top="1000px" android:right="500px" android:bottom="750px">
+            <shape android:shape="rectangle">
+                <solid android:color="#269389"/>
+            </shape>
+        </item>
+        <item android:left="1750px" android:top="1000px" android:right="0px" android:bottom="750px">
+            <shape android:shape="rectangle">
+                <solid android:color="#1a1f25"/>
+            </shape>
+        </item>
+        <item android:left="250px" android:top="1250px" android:right="1500px" android:bottom="500px">
+            <shape android:shape="rectangle">
+                <solid android:color="#7647ab"/>
+            </shape>
+        </item>
+        <item android:left="500px" android:top="1250px" android:right="1250px" android:bottom="500px">
+            <shape android:shape="rectangle">
+                <solid android:color="#c06b5b"/>
+            </shape>
+        </item>
+        <item android:left="1250px" android:top="1250px" android:right="500px" android:bottom="500px">
+            <shape android:shape="rectangle">
+                <solid android:color="#999358"/>
+            </shape>
+        </item>
+        <item android:left="1500px" android:top="1250px" android:right="250px" android:bottom="500px">
+            <shape android:shape="rectangle">
+                <solid android:color="#652e41"/>
+            </shape>
+        </item>
+        <item android:left="0px" android:top="1500px" android:right="1750px" android:bottom="250px">
+            <shape android:shape="rectangle">
+                <solid android:color="#37e2e8"/>
+            </shape>
+        </item>
+        <item android:left="250px" android:top="1500px" android:right="1500px" android:bottom="250px">
+            <shape android:shape="rectangle">
+                <solid android:color="#d38dce"/>
+            </shape>
+        </item>
+        <item android:left="1500px" android:top="1500px" android:right="250px" android:bottom="250px">
+            <shape android:shape="rectangle">
+                <solid android:color="#4daae3"/>
+            </shape>
+        </item>
+        <item android:left="1750px" android:top="1500px" android:right="0px" android:bottom="250px">
+            <shape android:shape="rectangle">
+                <solid android:color="#c884fd"/>
+            </shape>
+        </item>
+        <item android:left="0px" android:top="1750px" android:right="1750px" android:bottom="0px">
+            <shape android:shape="rectangle">
+                <solid android:color="#1d616d"/>
+            </shape>
+        </item>
+        <item android:left="250px" android:top="1750px" android:right="1500px" android:bottom="0px">
+            <shape android:shape="rectangle">
+                <solid android:color="#72849d"/>
+            </shape>
+        </item>
+        <item android:left="1500px" android:top="1750px" android:right="250px" android:bottom="0px">
+            <shape android:shape="rectangle">
+                <solid android:color="#14fb18"/>
+            </shape>
+        </item>
+        <item android:left="1750px" android:top="1750px" android:right="0px" android:bottom="0px">
+            <shape android:shape="rectangle">
+                <solid android:color="#fda6dd"/>
+            </shape>
+        </item>
+</layer-list>
