@@ -9,6 +9,7 @@ import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Divider
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -41,7 +42,7 @@ fun MainScreen() {
 
     Scaffold(
         topBar = { CustomTabBar(pages = pages, pagerState = pagerState) },
-        containerColor = DY_DarkBackground // 整个页面的背景色
+        containerColor = MaterialTheme.colorScheme.background // 整个页面的背景色
     ) { paddingValues ->
         // 使用 HorizontalPager 实现左右滑动切换 Tab
         HorizontalPager(
@@ -67,12 +68,12 @@ fun EmptyTabScreen(name: String) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(DY_DarkBackground),
+            .background(MaterialTheme.colorScheme.background),
         contentAlignment = Alignment.Center
     ) {
         Text(
             text = "暂无$name",
-            color = DY_White.copy(alpha = 0.5f),
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
             fontSize = 18.sp
         )
     }
@@ -89,7 +90,7 @@ fun CustomTabBar(pages: Array<TabPage>, pagerState: PagerState) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(DY_DarkBackground) // 背景色给到 Column
+            .background(MaterialTheme.colorScheme.background) // 背景色给到 Column
     ) {
         // Tab Text 和 指示器的 Row
         Row(
@@ -117,7 +118,7 @@ fun CustomTabBar(pages: Array<TabPage>, pagerState: PagerState) {
                     Text(
                         text = page.title,
                         fontSize = 20.sp,
-                        color = if (isSelected) DY_White else DY_White.copy(alpha = 0.5f),
+                        color = if (isSelected) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
                         fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
                         // 注意：这里不再添加底部 padding，因为它会影响指示器的位置
                     )
@@ -127,9 +128,9 @@ fun CustomTabBar(pages: Array<TabPage>, pagerState: PagerState) {
                     Spacer(modifier = Modifier.height(16.dp)) // 文本和下划线之间的间距
                     Box(
                         modifier = Modifier
-                            .width(if (isSelected) 32.dp else 0.dp) // 选中时宽度，未选中时为0
+                            .width(if (isSelected) 40.dp else 0.dp) // 选中时宽度，未选中时为0
                             .height(if (isSelected) 3.dp else 0.dp) // 选中时高度，未选中时为0
-                            .background(DY_White) // 选中的指示器颜色
+                            .background(MaterialTheme.colorScheme.onBackground) // 选中的指示器颜色
                     )
                 }
             }
@@ -142,7 +143,7 @@ fun CustomTabBar(pages: Array<TabPage>, pagerState: PagerState) {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(1.dp), // 细线高度
-            color = DY_White.copy(alpha = 0.3f) // 未选中页面的文本颜色或半透明白
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f) // 未选中页面的文本颜色或半透明白
         )
     }
 }

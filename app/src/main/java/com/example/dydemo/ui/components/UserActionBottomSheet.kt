@@ -118,8 +118,8 @@ fun UserActionBottomSheet(
     if (showUnfollowConfirm) {
         AlertDialog(
             onDismissRequest = { showUnfollowConfirm = false },
-            title = { Text("确认取关", color = DY_White) },
-            text = { Text("您确定要取消关注 ${user.nickname} 吗？此操作不可撤销。", color = DY_White.copy(alpha = 0.8f)) },
+            title = { Text("确认取关", color = MaterialTheme.colorScheme.onSurface) },
+            text = { Text("您确定要取消关注 ${user.nickname} 吗？此操作不可撤销。", color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)) },
             confirmButton = {
                 TextButton(
                     onClick = {
@@ -135,10 +135,10 @@ fun UserActionBottomSheet(
             },
             dismissButton = {
                 TextButton(onClick = { showUnfollowConfirm = false }) {
-                    Text("取消", color = DY_White)
+                    Text("取消", color = MaterialTheme.colorScheme.onSurface)
                 }
             },
-            containerColor = DY_DarkBackground,
+            containerColor = MaterialTheme.colorScheme.background,
         )
     }
 
@@ -146,7 +146,7 @@ fun UserActionBottomSheet(
     ModalBottomSheet(
         onDismissRequest = onDismiss,
         sheetState = sheetState,
-        containerColor = DY_DarkBackground, // 底部表单背景色
+        containerColor = MaterialTheme.colorScheme.surface, // 底部表单背景色
         // 【核心修改】将 dragHandle 设置为 null 以隐藏最上方的横条
         dragHandle = null
     ) {
@@ -168,21 +168,21 @@ fun UserActionBottomSheet(
                 Icon(
                     imageVector = Icons.Default.Close,
                     contentDescription = "关闭",
-                    tint = DY_White,
+                    tint = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.size(28.dp) // 【修正 2】将图标尺寸缩小到 16dp，使其在 24dp 圈内居中且比例协调
                 )
             }
         }
         Column(modifier = Modifier.padding(end=16.dp, start = 16.dp, bottom = 16.dp)) {
-
+            Spacer(Modifier.width(16.dp))
             // 用户头像和昵称 (顶部信息)
             Row(verticalAlignment = Alignment.CenterVertically) {
                 // --- 1. 头像 ---
                 Box(
                     modifier = Modifier
-                        .size(64.dp)
+                        .size(80.dp)
                         .clip(CircleShape)
-                        .background(DY_InputBackground) // 占位背景色，作为图片加载失败时的背景
+                        .background(MaterialTheme.colorScheme.surface) // 占位背景色，作为图片加载失败时的背景
                 ) {
                     val avatarBitmap = remember(user.avatarResId) {
                         if (user.avatarResId > 0) {
@@ -222,8 +222,8 @@ fun UserActionBottomSheet(
                     }
                 }
 
-                Spacer(Modifier.width(12.dp))
-                Spacer(modifier = Modifier.width(16.dp))
+                Spacer(Modifier.width(16.dp))
+//                Spacer(modifier = Modifier.width(16.dp))
 
                 // 将昵称和副标题放入 Column 中
                 Column {
@@ -233,7 +233,7 @@ fun UserActionBottomSheet(
                         text = displayName,
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
-                        color = DY_White
+                        color = MaterialTheme.colorScheme.onBackground
                     )
 
                     Spacer(modifier = Modifier.height(2.dp))
@@ -241,7 +241,7 @@ fun UserActionBottomSheet(
                     // 副标题行 (始终存在)
                     Text(
                         text = subtitleText, // <-- 使用计算出的副标题文本
-                        color = DY_LightGray.copy(alpha = 0.7f), // 较暗淡的颜色
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f), // 较暗淡的颜色
                         fontSize = 14.sp
                     )
                 }
@@ -267,7 +267,7 @@ fun UserActionBottomSheet(
                     // 设置高度为 112dp，由内部 weight 决定分配
                     .height(120.dp)
                     .clip(RoundedCornerShape(8.dp))
-                    .background(Color.Gray.copy(alpha = 0.4f)),
+                    .background(MaterialTheme.colorScheme.background),
             ) {
                 // 操作项 1: 设置特别关注 (上部)
                 Box(
@@ -296,7 +296,7 @@ fun UserActionBottomSheet(
                 ActionItem( // 仍然使用原有的 ActionItemStyled helper
                     icon = Icons.Default.Edit,
                     text = "设置备注",
-                    textColor = DY_White,
+                    textColor = MaterialTheme.colorScheme.onBackground,
                     iconPositionRight = true, // 图标在右侧
                     onClick = {
                         onDismiss()
@@ -325,8 +325,10 @@ fun UserActionBottomSheet(
                     .fillMaxWidth()
                     .height(56.dp)
                     .clip(RoundedCornerShape(8.dp))
-                    .background(Color.Gray.copy(alpha = 0.4f))
+                    .background(MaterialTheme.colorScheme.background)
             )
+
+            Spacer(modifier = Modifier.height(32.dp)) // 间隔
         }
     }
 }
@@ -396,7 +398,7 @@ private fun SpecialFollowItem(
             // 主标题
             Text(
                 text = "特别关注",
-                color = DY_White,
+                color = MaterialTheme.colorScheme.onBackground,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold
             )
@@ -407,7 +409,7 @@ private fun SpecialFollowItem(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     text = "作品优先推荐，更新及时提示",
-                    color = DY_LightGray.copy(alpha = 0.7f), // 灰色文字
+                    color = MaterialTheme.colorScheme.onSurface, // 灰色文字
                     fontSize = 12.sp
                 )
                 Spacer(modifier = Modifier.width(4.dp))
@@ -415,7 +417,7 @@ private fun SpecialFollowItem(
                 Icon(
                     imageVector = Icons.Outlined.Info, // 使用 Outlined.Info 图标作为 'i'
                     contentDescription = "信息提示",
-                    tint = Color.Gray, // 较深的灰色
+                    tint = MaterialTheme.colorScheme.onSurface, // 较深的灰色
                     modifier = Modifier.size(16.dp)
                 )
             }
@@ -436,12 +438,12 @@ private fun SpecialFollowItem(
                 }
             },
             // 自定义颜色以符合 UI 风格
-            colors = SwitchDefaults.colors(
-                checkedThumbColor = DY_White,
-                checkedTrackColor = DY_PrimaryRed, // 开启状态使用红色
-                uncheckedThumbColor = DY_MediumGray, // 关闭状态使用深灰色
-                uncheckedTrackColor = DY_LightGray.copy(alpha = 0.4f)
-            )
+//            colors = SwitchDefaults.colors(
+//                checkedThumbColor = MaterialTheme.colorScheme.onSurface,
+//                checkedTrackColor = DY_PrimaryRed, // 开启状态使用红色
+//                uncheckedThumbColor = MaterialTheme.colorScheme.onSurfaceVariant, // 关闭状态使用深灰色
+//                uncheckedTrackColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f)
+//            )
         )
     }
 }

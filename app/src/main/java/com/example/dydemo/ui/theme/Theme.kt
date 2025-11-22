@@ -9,45 +9,65 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.BlendMode.Companion.Color
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
-private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+// --- 1. 定义基于 DY_ 颜色的深色配色方案 ---
+private val DyDarkColorScheme = darkColorScheme(
+    // 核心/强调色：用于按钮和高亮
+    primary = DY_PrimaryRed,
+    onPrimary = DY_White,
+
+    // 背景色：用于整体背景和主要容器
+    background = DY_DarkBackground,
+    onBackground = DY_White,
+
+    // 表面色：用于次要容器、卡片、输入框 (使用 DY_InputBackground)
+    surface = DY_InputBackground,
+    onSurface = DY_LightGray,
+
+    // 次要颜色 (可选，但推荐填充，保持 DY 风格)
+    secondary = DY_MediumGray,
+    onSecondary = DY_White,
+
+    // 错误色
+    error = DY_PrimaryRed
 )
 
-private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
+// --- 2. 定义基于 DY_ 颜色的浅色配色方案 (Day Mode) ---
+//    *注意：由于您的颜色多为深色系，浅色模式下需进行反转或使用标准亮色。*
+private val DyLightColorScheme = lightColorScheme(
+    // 核心/强调色：保持一致
+    primary = DY_PrimaryRed,
+    onPrimary = DY_White,
 
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+    // 背景色：设置为白色
+    background = DY_White,
+    onBackground = DY_Black,          // 背景上的文本设为黑色
+
+    // 表面色：设置为亮灰色 (与 Dark Mode 的 DY_DarkBackground 形成对比)
+    surface = Color(0xFFF0F0F0),
+    onSurface = DY_MediumGray,        // 表面上的文本色
+
+    // 次要颜色
+    secondary = DY_MediumGray,
+    onSecondary = DY_White,
+
+    // 错误色
+    error = DY_PrimaryRed
 )
 
 @Composable
 fun DyDemoTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
-
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
+        darkTheme -> DyDarkColorScheme
+        else -> DyLightColorScheme
     }
 
     MaterialTheme(

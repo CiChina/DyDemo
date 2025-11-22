@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.example.dydemo.ui.theme.DY_DarkBackground
@@ -35,10 +36,12 @@ fun SetRemarkDialog(
             modifier = Modifier
                 .width(300.dp)
                 .clip(RoundedCornerShape(12.dp))
-                .background(DY_DarkBackground)
+                .background(MaterialTheme.colorScheme.background)
                 .padding(24.dp)
         ) {
-            Text("设置备注", style = MaterialTheme.typography.titleLarge, color = DY_White)
+            Text("设置备注",
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.background)
             Spacer(modifier = Modifier.height(16.dp))
 
             // 文本输入框
@@ -47,12 +50,17 @@ fun SetRemarkDialog(
                 onValueChange = { textState = it },
                 label = { Text("备注名称") },
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedTextColor = DY_White,
-                    unfocusedTextColor = DY_White,
-                    cursorColor = DY_PrimaryRed,
-                    focusedBorderColor = DY_PrimaryRed,
-                    unfocusedBorderColor = DY_InputBackground,
-                    unfocusedLabelColor = DY_InputBackground
+                    // 聚焦和未聚焦的文本颜色，使用 onSurface（背景上的文本色）
+                    focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                    unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+
+                    // 光标和聚焦边框，使用 primary（强调色，即 DY_PrimaryRed）
+                    cursorColor = MaterialTheme.colorScheme.primary,
+                    focusedBorderColor = MaterialTheme.colorScheme.primary,
+
+                    // 未聚焦的边框和标签，使用 onSurfaceVariant（一种略微柔和的对比色）
+                    unfocusedBorderColor = MaterialTheme.colorScheme.surface,
+                    unfocusedLabelColor = MaterialTheme.colorScheme.surface
                 ),
                 modifier = Modifier.fillMaxWidth()
             )
@@ -64,7 +72,7 @@ fun SetRemarkDialog(
                 horizontalArrangement = Arrangement.End
             ) {
                 TextButton(onClick = onDismissRequest) {
-                    Text("取消", color = DY_White)
+                    Text("取消", color = MaterialTheme.colorScheme.onSurface)
                 }
                 Spacer(modifier = Modifier.width(8.dp))
                 TextButton(
@@ -73,7 +81,7 @@ fun SetRemarkDialog(
                         onDismissRequest()
                     }
                 ) {
-                    Text("确定", color = DY_PrimaryRed)
+                    Text("确定", color = MaterialTheme.colorScheme.primary)
                 }
             }
         }

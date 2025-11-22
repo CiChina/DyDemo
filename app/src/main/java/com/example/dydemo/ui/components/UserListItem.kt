@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -22,6 +23,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
@@ -33,10 +35,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.dydemo.R // 假设资源文件在 R 中
 import com.example.dydemo.data.model.User
-import com.example.dydemo.ui.theme.DY_InputBackground
-import com.example.dydemo.ui.theme.DY_LightGray
-import com.example.dydemo.ui.theme.DY_MediumGray
+import com.example.dydemo.ui.theme.DY_PrimaryRed
 import com.example.dydemo.ui.theme.DY_White
+//import com.example.dydemo.ui.theme.MaterialTheme.colorScheme.surface
+//import com.example.dydemo.ui.theme.MaterialTheme.colorScheme.onSurface
+//import com.example.dydemo.ui.theme.MaterialTheme.colorScheme.onSurfaceVariant
+//import com.example.dydemo.ui.theme.MaterialTheme.colorScheme.onSurface
 import com.example.dydemo.ui.utils.getBitmapFromDrawable
 
 
@@ -91,8 +95,8 @@ fun UserListItem(
     }
 
     // 如果 currentIsFollowing 为 true，按钮是灰底；如果为 false (待定取关)，按钮是红底。
-    val containerColor = if (currentIsFollowing) Color.Gray.copy(alpha = 0.5f) else Color.Red
-    val contentColor = DY_White
+    val containerColor = if (currentIsFollowing) MaterialTheme.colorScheme.onSurface else DY_PrimaryRed
+    val contentColor = if (currentIsFollowing) MaterialTheme.colorScheme.surface else DY_White
     // 获取 Context 以便显示 Toast
     val context = LocalContext.current
 
@@ -108,7 +112,7 @@ fun UserListItem(
             modifier = Modifier
                 .size(64.dp)
                 .clip(CircleShape)
-                .background(DY_InputBackground) // 占位背景色，作为图片加载失败时的背景
+                .background(MaterialTheme.colorScheme.onSurface) // 占位背景色，作为图片加载失败时的背景
         ) {
             val avatarBitmap = remember(user.avatarResId) {
                 if (user.avatarResId > 0) {
@@ -164,7 +168,7 @@ fun UserListItem(
                 // 优先备注名/昵称
                 Text(
                     text = displayName,
-                    color = Color.White,
+                    color = MaterialTheme.colorScheme.onBackground,
                     fontSize = 16.sp,
                     maxLines = 1,
                     // 只有当有备注时，才允许截断，否则昵称应该独占
@@ -175,7 +179,7 @@ fun UserListItem(
 //                if (user.isMutual) {
 //                    Spacer(modifier = Modifier.width(4.dp))
 //                    // Icon(painter = painterResource(id = R.drawable.ic_mutual), ...) // 互关图标
-//                    Text("互关", color = DY_LightGray, fontSize = 10.sp)
+//                    Text("互关", color = MaterialTheme.colorScheme.onSurface, fontSize = 10.sp)
 //                }
                 if (user.isSpecialFollow) {
                     Spacer(modifier = Modifier.width(4.dp))
@@ -189,7 +193,7 @@ fun UserListItem(
                 Spacer(modifier = Modifier.height(2.dp)) // 稍微隔开
                 Text(
                     text = "名字: ${user.nickname}", // <-- 显示原昵称
-                    color = DY_LightGray.copy(alpha = 0.7f), // 使用浅灰色，降低优先级
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f), // 使用浅灰色，降低优先级
                     fontSize = 12.sp,
                     maxLines = 1
                 )
@@ -219,14 +223,18 @@ fun UserListItem(
                 fontWeight = FontWeight.SemiBold
             )
         }
+        Spacer(modifier = Modifier.width(12.dp))
 
         // 4. “···”更多操作按钮
         Icon(
             imageVector = Icons.Filled.MoreVert,
             contentDescription = "更多操作",
-            tint = DY_MediumGray,
+            tint = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier
                 .size(24.dp)
+                .graphicsLayer {
+                    rotationZ = 90f
+                }
                 // 【核心修改】将逻辑放入 clickable 中
                 .clickable {
                     // 1. 检查 pendingFollowActions 中是否有当前用户的状态
@@ -259,16 +267,16 @@ fun FollowButton(isFollowing: Boolean, onClick: () -> Unit) {
     // 抖音风格的已关注按钮是深色圆角，文字是灰色
     Box(
         modifier = Modifier
-            .width(70.dp)
+            .width(80.dp)
             .height(28.dp)
             .clip(androidx.compose.foundation.shape.RoundedCornerShape(4.dp))
-            .background(DY_InputBackground) // 深色背景
+            .background(MaterialTheme.colorScheme.surface) // 深色背景
             .clickable(onClick = onClick),
         contentAlignment = Alignment.Center
     ) {
         Text(
             text = "已关注",
-            color = DY_LightGray,
+            color = DY_White,
             fontSize = 12.sp
         )
     }

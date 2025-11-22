@@ -46,7 +46,7 @@ fun RemarkEditDialog(
     Dialog(onDismissRequest = onDismiss) {
         Card(
             shape = RoundedCornerShape(12.dp),
-            colors = CardDefaults.cardColors(containerColor = DY_DialogBackground),
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background),
             modifier = Modifier.width(300.dp)
         ) {
             Column(
@@ -56,7 +56,7 @@ fun RemarkEditDialog(
                 // 标题
                 Text(
                     text = "设置备注名",
-                    color = DY_White,
+                    color = MaterialTheme.colorScheme.onBackground,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(bottom = 16.dp)
@@ -66,7 +66,7 @@ fun RemarkEditDialog(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(DY_InputBackground, RoundedCornerShape(8.dp))
+                        .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(8.dp))
                         .padding(horizontal = 10.dp, vertical = 8.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -77,13 +77,13 @@ fun RemarkEditDialog(
                             textState.value = it
                             onInputChange(it) // 将更改传递给 ViewModel
                         },
-                        textStyle = TextStyle(color = DY_White, fontSize = 16.sp),
+                        textStyle = TextStyle(color = MaterialTheme.colorScheme.onBackground, fontSize = 16.sp),
                         modifier = Modifier.weight(1f),
                         singleLine = true,
                         // 提示文本
                         decorationBox = { innerTextField ->
                             if (textState.value.isEmpty()) {
-                                Text("设置备注名给 $userNickname", color = DY_MediumGray, fontSize = 16.sp)
+                                Text("设置备注名给 $userNickname", color = MaterialTheme.colorScheme.onSurface, fontSize = 16.sp)
                             }
                             innerTextField()
                         }
@@ -94,10 +94,10 @@ fun RemarkEditDialog(
                         Icon(
                             imageVector = Icons.Filled.Close,
                             contentDescription = "清除文本",
-                            tint = DY_White,
+                            tint = MaterialTheme.colorScheme.surface,
                             modifier = Modifier
                                 .size(24.dp)
-                                .background(DY_ClearButton, CircleShape)
+                                .background(MaterialTheme.colorScheme.onSurface, CircleShape)
                                 .clickable {
                                     textState.value = "" // 清除本地状态
                                     onClearInput()     // 通知 ViewModel 清除
@@ -117,7 +117,7 @@ fun RemarkEditDialog(
                     // 取消按钮
                     Text(
                         text = "取消",
-                        color = DY_MediumGray,
+                        color = MaterialTheme.colorScheme.onSurface,
                         fontSize = 16.sp,
                         modifier = Modifier
                             .clickable(onClick = onDismiss)
@@ -126,7 +126,7 @@ fun RemarkEditDialog(
                     // 确定按钮
                     Text(
                         text = "确定",
-                        color = DY_White,
+                        color = MaterialTheme.colorScheme.onBackground,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier
