@@ -19,13 +19,6 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
-// 假设这些是您的颜色常量
-val DY_DialogBackground = Color(0xFF2B2B2B) // 圆角弹窗背景
-val DY_InputBackground = Color(0xFF404040) // 浅灰色输入框背景
-val DY_ClearButton = Color(0xFF707070)     // 深灰色 X 图标背景
-val DY_White = Color(0xFFFFFFFF)
-val DY_MediumGray = Color(0xFF9E9E9E) // 取消按钮颜色
-
 
 @Composable
 fun RemarkEditDialog(

@@ -17,7 +17,7 @@ class UserRepository @Inject constructor(
     private val jsonDataSource: JsonDataSource
 ) {
     // 【修改】现在需要一个参数来确定使用哪个 DAO 方法
-    fun getFollowingList(mode: SortingMode): Flow<List<User>> { // <--- 接受 SortingMode
+    fun getFollowingList(mode: SortingMode): Flow<List<User>> {
         val entityFlow = when (mode) {
             SortingMode.COMPREHENSIVE -> userDao.getFollowingUsersByComprehensive()
             SortingMode.TIME_ORDER -> userDao.getFollowingUsersByTime()
@@ -59,13 +59,11 @@ class UserRepository @Inject constructor(
         }
     }
 
-    // --- 关注列表核心操作 (现在操作数据库) ---
-
     suspend fun toggleSpecialFollow(userId: Int) {
-        // 1. 从数据库获取当前用户状态
+        // 从数据库获取当前用户状态
         val userEntity = userDao.getFollowingUsersByComprehensive().map { it.find { user -> user.id == userId } }.firstOrNull()
 
-        // 2. 切换状态并更新数据库
+        // 切换状态并更新数据库
         userEntity?.let {
             val updatedEntity = it.copy(isSpecialFollow = !it.isSpecialFollow)
             userDao.update(updatedEntity)
@@ -73,7 +71,7 @@ class UserRepository @Inject constructor(
     }
 
     suspend fun setSpecialFollow(userId: Int, isSpecialFollow: Boolean) {
-        // ... 数据库操作：根据 isSpecialFollow 参数设置数据库中的状态
+        // 数据库操作：根据 isSpecialFollow 参数设置数据库中的状态
         userDao.updateSpecialFollowStatus(userId, isSpecialFollow)
     }
 
@@ -91,8 +89,7 @@ class UserRepository @Inject constructor(
     }
 
     /**
-     * 【新增/替换方法】根据布尔状态更新用户的关注时间戳。
-     * 它是 ViewModel 和 UserDao 之间的桥梁。
+     * 根据布尔状态更新用户的关注时间戳。
      * @param userId 用户ID
      * @param isFollowing true 表示关注 (设置时间戳)，false 表示取关 (清除时间戳)。
      */

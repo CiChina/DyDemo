@@ -45,7 +45,7 @@ import java.util.Date
 import java.util.Locale
 
 
-// 定义一个格式化时间的函数
+// 格式化时间的函数
 fun formatTimestamp(timestamp: Long): String {
     val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     return formatter.format(Date(timestamp))
@@ -58,7 +58,7 @@ fun UserActionBottomSheet(
     user: User,
     onDismiss: () -> Unit,
     viewModel: FollowingViewModel,
-    // 【修改】添加选项选择回调
+    // 添加选项选择回调
     onOptionSelected: (UserAction) -> Unit
 ) {
     val displayName = remember(user.customRemark, user.nickname) {
@@ -100,7 +100,7 @@ fun UserActionBottomSheet(
     // 获取 Context 以便显示 Toast
     val context = LocalContext.current
 
-    // 1. 设置备注对话框
+    // 设置备注对话框
     if (showRemarkDialog) {
         // 使用 CustomDialogs.kt 中定义的对话框
         SetRemarkDialog(
@@ -147,10 +147,10 @@ fun UserActionBottomSheet(
         onDismissRequest = onDismiss,
         sheetState = sheetState,
         containerColor = MaterialTheme.colorScheme.surface, // 底部表单背景色
-        // 【核心修改】将 dragHandle 设置为 null 以隐藏最上方的横条
+        // 将 dragHandle 设置为 null 以隐藏最上方的横条
         dragHandle = null
     ) {
-        // 【新增】右上角关闭按钮
+        // 右上角关闭按钮
         IconButton(
             onClick = onDismiss,
             modifier = Modifier
@@ -169,7 +169,7 @@ fun UserActionBottomSheet(
                     imageVector = Icons.Default.Close,
                     contentDescription = "关闭",
                     tint = MaterialTheme.colorScheme.onSurface,
-                    modifier = Modifier.size(28.dp) // 【修正 2】将图标尺寸缩小到 16dp，使其在 24dp 圈内居中且比例协调
+                    modifier = Modifier.size(28.dp)
                 )
             }
         }
@@ -177,7 +177,7 @@ fun UserActionBottomSheet(
             Spacer(Modifier.width(16.dp))
             // 用户头像和昵称 (顶部信息)
             Row(verticalAlignment = Alignment.CenterVertically) {
-                // --- 1. 头像 ---
+                // 1. 头像
                 Box(
                     modifier = Modifier
                         .size(80.dp)
@@ -252,7 +252,7 @@ fun UserActionBottomSheet(
 //            Spacer(Modifier.height(8.dp))
         }
 
-        // --- 底部操作按钮区 (核心修改) ---
+        // 底部操作按钮区 (核心修改)
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -260,7 +260,7 @@ fun UserActionBottomSheet(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            // --- 1. 特别关注 / 设置备注 (合并的圆角矩形，上下排列) ---
+            // 1. 特别关注 / 设置备注 (合并的圆角矩形，上下排列)
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -311,7 +311,7 @@ fun UserActionBottomSheet(
 
             Spacer(modifier = Modifier.height(16.dp)) // 间隔
 
-            // --- 2. 取消关注 (独立的圆角矩形，图标在右侧) ---
+            // 2. 取消关注 (独立的圆角矩形，图标在右侧)
             ActionItem(
                 icon = Icons.Default.Clear,
                 text = "取消关注",

@@ -13,7 +13,7 @@ import androidx.compose.ui.graphics.BlendMode.Companion.Color
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
-// --- 1. 定义基于 DY_ 颜色的深色配色方案 ---
+//  1. 定义基于 DY_ 颜色的深色配色方案
 private val DyDarkColorScheme = darkColorScheme(
     // 核心/强调色：用于按钮和高亮
     primary = DY_PrimaryRed,
@@ -35,8 +35,7 @@ private val DyDarkColorScheme = darkColorScheme(
     error = DY_PrimaryRed
 )
 
-// --- 2. 定义基于 DY_ 颜色的浅色配色方案 (Day Mode) ---
-//    *注意：由于您的颜色多为深色系，浅色模式下需进行反转或使用标准亮色。*
+//  2. 定义基于 DY_ 颜色的浅色配色方案 (Day Mode)
 private val DyLightColorScheme = lightColorScheme(
     // 核心/强调色：保持一致
     primary = DY_PrimaryRed,
@@ -46,7 +45,6 @@ private val DyLightColorScheme = lightColorScheme(
     background = DY_White,
     onBackground = DY_Black,          // 背景上的文本设为黑色
 
-    // 表面色：设置为亮灰色 (与 Dark Mode 的 DY_DarkBackground 形成对比)
     surface = Color(0xFFF0F0F0),
     onSurface = DY_MediumGray,        // 表面上的文本色
 

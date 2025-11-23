@@ -50,15 +50,15 @@ fun SetRemarkDialog(
                 onValueChange = { textState = it },
                 label = { Text("备注名称") },
                 colors = OutlinedTextFieldDefaults.colors(
-                    // 聚焦和未聚焦的文本颜色，使用 onSurface（背景上的文本色）
+                    // 聚焦和未聚焦的文本颜色
                     focusedTextColor = MaterialTheme.colorScheme.onSurface,
                     unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
 
-                    // 光标和聚焦边框，使用 primary（强调色，即 DY_PrimaryRed）
+                    // 光标和聚焦边框
                     cursorColor = MaterialTheme.colorScheme.primary,
                     focusedBorderColor = MaterialTheme.colorScheme.primary,
 
-                    // 未聚焦的边框和标签，使用 onSurfaceVariant（一种略微柔和的对比色）
+                    // 未聚焦的边框和标签
                     unfocusedBorderColor = MaterialTheme.colorScheme.surface,
                     unfocusedLabelColor = MaterialTheme.colorScheme.surface
                 ),

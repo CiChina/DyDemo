@@ -120,7 +120,6 @@ fun CustomTabBar(pages: Array<TabPage>, pagerState: PagerState) {
                         fontSize = 20.sp,
                         color = if (isSelected) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
                         fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
-                        // 注意：这里不再添加底部 padding，因为它会影响指示器的位置
                     )
 
                     // 2. 选中 Tab 的指示器 (下划线)

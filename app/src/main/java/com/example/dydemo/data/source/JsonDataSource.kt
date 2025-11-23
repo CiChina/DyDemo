@@ -2,7 +2,7 @@ package com.example.dydemo.data.source
 
 import android.app.Application
 import com.example.dydemo.data.model.UserEntity
-import kotlinx.serialization.json.Json // <--- 现在应该能导入
+import kotlinx.serialization.json.Json
 import kotlinx.serialization.decodeFromString
 import java.io.IOException
 import javax.inject.Inject

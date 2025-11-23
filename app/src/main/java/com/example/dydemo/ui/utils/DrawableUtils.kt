@@ -13,13 +13,13 @@ import androidx.core.graphics.scale
 /**
  * 解决 LayerList 渲染偏移问题的工具函数：
  * 强制在高分辨率空间 (sourceSizePx=2000) 绘制，然后降采样到目标尺寸 (targetSizePx=128)。
- * * @param targetSizePx Compose 实际需要的尺寸 (例如 128)。
- * @param sourceSizePx XML 坐标系所需的最小绘制尺寸 (例如 2000)。
+ * * @param targetSizePx Compose 实际需要的尺寸 。
+ * @param sourceSizePx XML 坐标系所需的最小绘制尺寸。
  */
 fun getBitmapFromDrawable(context: Context, drawableId: Int, targetSizePx: Int = 128, sourceSizePx: Int = 2000): Bitmap? {
     val drawable = ContextCompat.getDrawable(context, drawableId) ?: return null
 
-    // --- 1. 高精度渲染 (保证 LayerList 坐标不偏移) ---
+    // 1. 高精度渲染 (保证坐标不偏移)
 
     // 创建高分辨率的 Bitmap，用于精确绘制
     val highResBitmap = createBitmap(sourceSizePx, sourceSizePx)
@@ -30,7 +30,7 @@ fun getBitmapFromDrawable(context: Context, drawableId: Int, targetSizePx: Int =
     drawable.setBounds(0, 0, canvas.width, canvas.height)
     drawable.draw(canvas)
 
-    // --- 2. 降采样 (解决性能问题) ---
+    // 2. 降采样
 
     try {
         // 创建最终的小尺寸 Bitmap，并进行缩放

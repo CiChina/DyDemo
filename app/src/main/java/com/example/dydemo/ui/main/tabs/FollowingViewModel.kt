@@ -15,10 +15,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-import com.example.dydemo.data.SortingMode // <--- 新增导入
+import com.example.dydemo.data.SortingMode
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.flatMapLatest // <--- 新增导入
-import kotlinx.coroutines.flow.combine // <--- 新增导入 (可能不需要，但 flatMapLatest 是必需的)
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.combine
 
 // 1. 使用 @HiltViewModel 标记，允许 Hilt 注入构造函数中的依赖
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -35,7 +35,7 @@ class FollowingViewModel @Inject constructor(
 
     init {
         // 【核心修改点】使用 viewModelScope.launch{} 包裹 collectLatest
-        viewModelScope.launch { // <--- 新增
+        viewModelScope.launch { //  新增
             _sortingMode
                 .onStart { _uiState.update { it.copy(isLoading = true) } }
                 .flatMapLatest { mode ->
@@ -48,7 +48,7 @@ class FollowingViewModel @Inject constructor(
                             _uiState.update { it.copy(isLoading = true) }
                         }
                 }
-                .collectLatest { list -> // <--- 现在在协程内调用，不会报错
+                .collectLatest { list -> //  现在在协程内调用，不会报错
                     _uiState.update {
                         it.copy(
                             followingUsers = list,
@@ -57,10 +57,10 @@ class FollowingViewModel @Inject constructor(
                         )
                     }
                 }
-        } // <--- 结束 launch
+        } //  结束 launch
     }
 
-    // 【新增方法】切换排序模式
+    // 切换排序模式
     fun toggleSortingMode() {
         val newMode = when (_sortingMode.value) {
             SortingMode.COMPREHENSIVE -> SortingMode.TIME_ORDER
@@ -132,7 +132,7 @@ class FollowingViewModel @Inject constructor(
             userRepository.toggleSpecialFollow(userId)
         }
     }
-    // 【核心修正】修改 onToggleSpecialFollow 以支持乐观更新
+    // 修改 onToggleSpecialFollow 支持乐观更新
     /**
      * 切换用户的特别关注状态，并进行乐观更新。
      * @param userId 目标用户ID
@@ -140,7 +140,7 @@ class FollowingViewModel @Inject constructor(
      */
     fun onToggleSpecialFollow(userId: Int, isChecked: Boolean) {
 
-        // 1. **乐观更新 (Optimistic Update)**：立即更新 UI State，触发 Switch 视觉变化
+        // 1. 立即更新 UI State，触发 Switch 视觉变化
         _uiState.update { currentState ->
             // 遍历用户列表 (followingUsers)，找到目标用户并更新 isSpecialFollow
             val updatedUsers = currentState.followingUsers.map { user ->
@@ -157,10 +157,10 @@ class FollowingViewModel @Inject constructor(
         // 2. 启动后台协程来更新数据库/网络
         viewModelScope.launch {
             try {
-                // 注意：假设您已将 Repository 方法修改为 setSpecialFollow 或类似名称
+
                 userRepository.setSpecialFollow(userId, isChecked)
             } catch (e: Exception) {
-                // 3. **回滚 (Rollback)**：如果更新失败，将状态回滚到旧值
+                // 3. 回滚：如果更新失败，将状态回滚到旧值
                 _uiState.update { currentState ->
                     val rolledBackUsers = currentState.followingUsers.map { user ->
                         if (user.id == userId) {
@@ -172,12 +172,10 @@ class FollowingViewModel @Inject constructor(
                     }
                     currentState.copy(followingUsers = rolledBackUsers)
                 }
-                // TODO: 可以在这里添加代码来显示错误提示
+                // TODO: 显示错误提示
             }
         }
     }
-    // 【原有的 onToggleSpecialFollow 已被替换，但我们仍需确保旧的 onToggleSpecialFollow 不存在或已修改】
-    // 旧的 onToggleSpecialFollow 已经被我们新的 with (userId: Int, isChecked: Boolean) 替换。
 
     fun onUpdateRemark(userId: Int, newRemark: String) {
         viewModelScope.launch {
@@ -186,7 +184,7 @@ class FollowingViewModel @Inject constructor(
     }
 
     // 修改备注的弹窗
-    // 【新增方法】显示编辑备注弹窗
+    // 显示编辑备注弹窗
     fun showRemarkDialog(user: User) {
         _uiState.update {
             it.copy(
@@ -196,17 +194,17 @@ class FollowingViewModel @Inject constructor(
         }
     }
 
-    // 【新增方法】更新输入框内容
+    // 更新输入框内容
     fun updateRemarkInput(newInput: String) {
         _uiState.update { it.copy(currentRemarkInput = newInput) }
     }
 
-    // 【新增方法】清除输入框内容
+    // 清除输入框内容
     fun clearRemarkInput() {
         _uiState.update { it.copy(currentRemarkInput = "") }
     }
 
-    // 【新增方法】取消编辑，隐藏弹窗
+    // 取消编辑，隐藏弹窗
     fun hideRemarkDialog() {
         _uiState.update {
             it.copy(
@@ -216,7 +214,7 @@ class FollowingViewModel @Inject constructor(
         }
     }
 
-    // 【新增方法】保存备注
+    // 保存备注
     fun saveRemark() {
         // 确保正在编辑用户
         val user = _uiState.value.userToEditRemark ?: return
@@ -231,7 +229,7 @@ class FollowingViewModel @Inject constructor(
         }
     }
 
-    // 【修改】关注/取关逻辑：基于列表隐含状态 (true) 进行切换
+    // 关注/取关逻辑：基于列表隐含状态 (true) 进行切换
     fun onFollowToggle(userId: Int) {
         _uiState.update { currentState ->
             // 1. 获取当前用户，隐含的数据库状态 isFollowing = true
@@ -263,7 +261,7 @@ class FollowingViewModel @Inject constructor(
     }
 
 
-    // 【修改】下拉刷新时触发的数据库提交和状态重置
+    // 下拉刷新时触发的数据库提交和状态重置
     fun refreshData() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
@@ -285,7 +283,7 @@ class FollowingViewModel @Inject constructor(
             _uiState.update {
                 it.copy(
                     pendingFollowActions = emptyMap(),
-                    isLoading = false // <--- 关键点 2：结束刷新
+                    isLoading = false //结束刷新
                 )
             }
         }
@@ -297,11 +295,11 @@ data class FollowingUiState(
     val followingUsers: List<User> = emptyList(),
     val isLoading: Boolean = false,
     val errorMessage: String? = null,
-    val currentSortingMode: SortingMode = SortingMode.COMPREHENSIVE, // <--- 新增状态,排序模式
-    // 【新增状态】用于控制备注编辑弹窗
+    val currentSortingMode: SortingMode = SortingMode.COMPREHENSIVE, //  新增状态,排序模式
+    // 用于控制备注编辑弹窗
     val userToEditRemark: User? = null, // 当前正在编辑备注的用户，null 表示弹窗隐藏
     val currentRemarkInput: String = "", // 当前输入框中的文本
-    // 【新增状态】使用 Map 存储待定的关注状态
+    // 使用 Map 存储待定的关注状态
     // Key: UserId (Int)
     // Value: 待定状态 (Boolean): true=待定关注，false=待定取关
     val pendingFollowActions: Map<Int, Boolean> = emptyMap()

@@ -21,7 +21,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.pulltorefresh.PullToRefreshState
 
-// 常量定义，您可以在项目中的某个文件中统一定义
 val SPINNER_SIZE = 24.dp
 val CROSSFADE_DURATION_MILLIS = 150
 val INDICATOR_BACKGROUND = Color(0xFF333333) // 深灰色背景

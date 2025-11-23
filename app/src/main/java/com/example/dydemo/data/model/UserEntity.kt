@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import kotlinx.serialization.Serializable
 
 /**
- * Room 数据库中的用户实体 (Entity)，对应数据库表结构
+ * Room 数据库中的用户实体，对应数据库表结构
  */
 @Entity(tableName = "following_users")
 @Serializable
@@ -18,5 +18,5 @@ data class UserEntity(
     val isMutual: Boolean,
     val isSpecialFollow: Boolean,
     val customRemark: String?,
-    var followTimestamp: Long?  // 【新增字段】关注时间戳 (以毫秒为单位)
+    var followTimestamp: Long?  // 关注时间戳 (以毫秒为单位)
 )

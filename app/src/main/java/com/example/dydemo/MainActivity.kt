@@ -25,7 +25,7 @@ class MainActivity : ComponentActivity() {
 
         // 2. 设置 Compose 内容
         setContent {
-            // 3. 应用我们的深色主题
+            // 3. 应用深色主题
             DyDemoTheme {
                 // 4. 使用 Surface 作为容器，应用背景色
                 Surface(

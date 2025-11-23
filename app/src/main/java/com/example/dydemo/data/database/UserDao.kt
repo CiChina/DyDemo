@@ -16,8 +16,7 @@ interface UserDao {
      * 【核心修改】实时获取关注列表。
      * 关键：只选择 followTimestamp 不为 NULL 的用户（即当前被关注的用户）。
      */
-    // 【综合排序】优先级：特别关注 DESC, 关注时间 ASC (旧关注在前，与抖音风格一致，可调整)
-    // 假设您希望已关注的按关注时间升序排列，如果降序则使用 DESC
+    // 【综合排序】优先级：特别关注, 关注时间
     @Query("SELECT * FROM following_users WHERE followTimestamp IS NOT NULL ORDER BY isSpecialFollow DESC, followTimestamp ASC")
     fun getFollowingUsersByComprehensive(): Flow<List<UserEntity>>
 
@@ -36,8 +35,6 @@ interface UserDao {
 
     /**
      * 更新整个 UserEntity 对象。
-     *
-     * 如果只需要更新少数字段，推荐使用下面的 @Query 方法，性能更高。
      */
     @Update
     suspend fun update(user: UserEntity)
@@ -49,14 +46,14 @@ interface UserDao {
     suspend fun getUserById(userId: Int): UserEntity? // 返回可空 UserEntity
 
     /**
-     * 【新增/优化】更新用户的 customRemark 字段。
+     * 更新用户的 customRemark 字段。
      * 使用 @Query 替代 @Update 整个对象，可以减少 Room 的开销。
      */
     @Query("UPDATE following_users SET customRemark = :newRemark WHERE id = :userId")
     suspend fun updateRemark(userId: Int, newRemark: String?)
 
     /**
-     * 【新增/优化】更新用户的 isSpecialFollow 状态。
+     * 更新用户的 isSpecialFollow 状态。
      */
     @Query("UPDATE following_users SET isSpecialFollow = :isSpecialFollow WHERE id = :userId")
     suspend fun updateSpecialFollow(userId: Int, isSpecialFollow: Boolean)
@@ -69,13 +66,13 @@ interface UserDao {
 
 
     /**
-     * 【保持】用于判断数据库是否为空，防止重复插入初始数据。
+     * 用于判断数据库是否为空，防止重复插入初始数据。
      */
     @Query("SELECT COUNT(id) FROM following_users")
     suspend fun countUsers(): Int
 
     /**
-     * 【替换】取关/关注操作：根据 ID 更新 followTimestamp。
+     * 取关/关注操作：根据 ID 更新 followTimestamp。
      * - 设置为 NULL：取关
      * - 设置为 Long：关注
      */
