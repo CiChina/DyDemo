@@ -1,4 +1,4 @@
-package com.example.dydemo.data.model
+package com.example.dydemo.domain.model
 
 import java.net.PasswordAuthentication
 

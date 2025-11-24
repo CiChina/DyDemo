@@ -1,15 +1,18 @@
 package com.example.dydemo.data.repository
-
-import com.example.dydemo.data.database.UserDao
-import com.example.dydemo.data.model.User
-import com.example.dydemo.data.model.UserMapper
+/*
+重大修改。 25-11-25
+引入 Pager 对象。负责配置 Paging 3 的数据源 (PagingSource)，并提供一个返回 Flow<PagingData<User>> 的方法。
+职责从简单的数据库操作转向高效的数据流管理。
+ */
+import com.example.dydemo.data.local.database.UserDao
+import com.example.dydemo.domain.model.User
+import com.example.dydemo.domain.mapper.UserMapper
 import com.example.dydemo.data.source.JsonDataSource
-import com.example.dydemo.data.model.UserEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
-import com.example.dydemo.data.SortingMode
+import com.example.dydemo.domain.model.SortingMode
 
 // 依赖注入：通过构造函数传入 UserDao
 class UserRepository @Inject constructor(

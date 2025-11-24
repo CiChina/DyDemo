@@ -1,4 +1,4 @@
-package com.example.dydemo.data.model
+package com.example.dydemo.data.local.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

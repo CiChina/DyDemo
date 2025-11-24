@@ -1,8 +1,12 @@
-package com.example.dydemo.ui.main.tabs
+package com.example.dydemo.viewmodel
 
+/**
+ * viewmodel，业务逻辑状态持有者
+ * 屏幕逻辑的核心
+ */
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.dydemo.data.model.User
+import com.example.dydemo.domain.model.User
 import com.example.dydemo.data.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,10 +19,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-import com.example.dydemo.data.SortingMode
+import com.example.dydemo.domain.model.SortingMode
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.combine
 
 // 1. 使用 @HiltViewModel 标记，允许 Hilt 注入构造函数中的依赖
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -279,7 +283,7 @@ class FollowingViewModel @Inject constructor(
             // Flow 重新收集数据后，数据库中状态为 false 的用户将不会出现在列表中。
 
             // 3. 重置 Map 和 Loading 状态
-            kotlinx.coroutines.delay(500) // 模拟网络延迟
+            delay(500) // 模拟网络延迟
             _uiState.update {
                 it.copy(
                     pendingFollowActions = emptyMap(),

@@ -1,16 +1,35 @@
-package com.example.dydemo.data.database
+package com.example.dydemo.data.local.database
 
+import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.example.dydemo.data.model.UserEntity
+import com.example.dydemo.data.local.entity.UserEntity
 import kotlinx.coroutines.flow.Flow
 
-
+/**
+ * 数据库访问对象
+ */
 @Dao
 interface UserDao {
+
+    /**
+     * 【核心修改】提供给 Paging 3 的数据源 - 综合排序
+     * 分页数据来自 Mock API，但如果未来需要缓存或本地筛选，则需要这个接口。
+     * 排序逻辑：特别关注 (DESC), 关注时间 (ASC)
+     */
+    @Query("SELECT * FROM following_users WHERE followTimestamp IS NOT NULL ORDER BY isSpecialFollow DESC, followTimestamp ASC")
+    fun getFollowingPagingSourceByComprehensive(): PagingSource<Int, UserEntity>
+
+    /**
+     * 【核心修改】提供给 Paging 3 的数据源 - 时间排序
+     * 排序逻辑：关注时间 DESC
+     */
+    @Query("SELECT * FROM following_users WHERE followTimestamp IS NOT NULL ORDER BY followTimestamp DESC, id ASC")
+    fun getFollowingPagingSourceByTime(): PagingSource<Int, UserEntity>
+
 
     /**
      * 【核心修改】实时获取关注列表。

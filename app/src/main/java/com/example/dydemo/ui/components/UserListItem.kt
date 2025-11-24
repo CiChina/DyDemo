@@ -25,16 +25,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.BitmapPainter
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.dydemo.R // 假设资源文件在 R 中
-import com.example.dydemo.data.model.User
+import com.example.dydemo.domain.model.User
 import com.example.dydemo.ui.theme.DY_PrimaryRed
 import com.example.dydemo.ui.theme.DY_White
 //import com.example.dydemo.ui.theme.MaterialTheme.colorScheme.surface
@@ -43,6 +40,11 @@ import com.example.dydemo.ui.theme.DY_White
 //import com.example.dydemo.ui.theme.MaterialTheme.colorScheme.onSurface
 import com.example.dydemo.ui.utils.getBitmapFromDrawable
 
+/**
+ * 图片优化。 25-11-25
+ * 确保头像图片加载使用现代库（如 Coil 或 Glide）的 AsyncImage，
+ * 并配置 size() 或 Modifier.size()，避免加载过大的原始图片，以最小化内存消耗和提高加载速度。
+ */
 
 @SuppressLint("LocalContextResourcesRead")
 @Composable
@@ -157,7 +159,7 @@ fun UserListItem(
         // 将名字和原名放入 Column 中
         Column(
             modifier = Modifier
-                .weight(1f) // 占据剩余空间
+                .weight(0.8f) // 占据剩余空间
                 .align(Alignment.CenterVertically)
                 .padding(start = 12.dp) // 假设您在这里有一个内边距
         ) {
@@ -214,7 +216,7 @@ fun UserListItem(
             ),
             // 添加一个可视的标记，指示它是待定状态
             modifier = Modifier
-                .width(80.dp)
+                .width(88.dp)
                 .alpha(if (isPending) 1.0f else 1.0f)
         ) {
             Text(

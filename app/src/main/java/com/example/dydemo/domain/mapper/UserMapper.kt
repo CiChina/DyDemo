@@ -1,4 +1,7 @@
-package com.example.dydemo.data.model
+package com.example.dydemo.domain.mapper
+
+import com.example.dydemo.data.local.entity.UserEntity
+import com.example.dydemo.domain.model.User
 
 /**
  * 负责 UserEntity (数据库) 和 User (UI 领域) 之间的相互转换

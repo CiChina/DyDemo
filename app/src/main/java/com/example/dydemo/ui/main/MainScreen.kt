@@ -1,5 +1,8 @@
 package com.example.dydemo.ui.main
 
+/**
+ * 根屏幕/导航容器
+ */
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

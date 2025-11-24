@@ -1,7 +1,7 @@
 package com.example.dydemo.data.source
 
 import android.app.Application
-import com.example.dydemo.data.model.UserEntity
+import com.example.dydemo.data.local.entity.UserEntity
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.decodeFromString
 import java.io.IOException

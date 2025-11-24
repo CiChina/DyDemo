@@ -7,31 +7,33 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
-import androidx.compose.material.icons.filled.List
 import androidx.compose.material3.*
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.dydemo.data.SortingMode
-import com.example.dydemo.data.model.User
+import com.example.dydemo.domain.model.SortingMode
+import com.example.dydemo.domain.model.User
 import com.example.dydemo.ui.components.UserActionBottomSheet
 import com.example.dydemo.ui.components.UserListItem
-import com.example.dydemo.ui.theme.DY_DarkBackground
 import com.example.dydemo.ui.theme.DY_MediumGray
-import com.example.dydemo.ui.theme.DY_PrimaryRed
 //import com.google.android.gms.cast.tv.cac.UserAction
-import com.example.dydemo.data.UserAction
-import kotlinx.coroutines.launch
+import com.example.dydemo.domain.model.UserAction
 import androidx.compose.material3.ExperimentalMaterial3Api
+import com.example.dydemo.ui.components.RemarkEditDialog
+import com.example.dydemo.viewmodel.FollowingViewModel
 
+/**
+ * 重大修改。 25-11-25
+ * 放弃使用标准的 Column 或简单的 List 渲染。
+ * 使用 Compose LazyColumn，并结合 Paging 3 提供的 collectAsLazyPagingItems() 来只渲染屏幕可见项。
+ */
 
 // 必须使用 @OptIn 标记，因为 Pull-to-Refresh API 仍是 Material 3 的实验性部分
 @OptIn(ExperimentalMaterial3Api::class)

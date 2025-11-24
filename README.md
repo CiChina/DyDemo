@@ -103,3 +103,52 @@
 
 * **SpecialFollowItem (本地状态):** 在 `SpecialFollowItem` 内部构建了一个独立的本地可观察状态 (`isSwitchChecked`)，用于控制 `Switch` 的即时视觉反馈。
 * **状态同步：** 使用 `LaunchedEffect(user.isSpecialFollow)` 监听 `ViewModel` 状态，强制在 `ViewModel` 状态变化（无论是成功更新还是错误回滚）时，将本地 `isSwitchChecked` 状态与全局状态进行同步，确保了 UI 的最终正确性。
+
+
+# 整体项目架构
+```
+com.example.dydemo/
+├── di/                              // 依赖注入层：Hilt配置应独立于数据层
+│   ├── AppModule.kt                 // 注入新的 PagingSource 和远程数据源的实例
+│   └── DatabaseModule.kt            // 注入数据库、DAO、Repository等依赖
+|
+├── data/                            // 数据层：负责数据的获取、存储和传输
+│   ├── local/                       // 本地数据源 (Room)
+│   │   ├── database/
+│   │   │   ├── AppDatabase.kt       // Room数据库配置
+│   │   │   └── UserDao.kt           // 数据库访问对象
+│   │   └── entity/                  // 数据库实体
+│   │       └── UserEntity.kt        // 数据库表结构
+│   ├── remote/                      // 远程数据源 (API)
+│   │   ├── FollowingApiService.kt   // API 接口定义
+│   │   ├── MockFollowingDataSource.kt// 模拟服务端分页实现
+│   │   └── dto/
+│   │       └── UserDto.kt           // API数据传输对象
+│   ├── paging/                      // Paging 3 数据源配置
+│   │   └── FollowingPagingSource.kt // P负责从 remote 获取分页数据
+│   ├── repository/                  // 数据仓库接口及实现
+│   │   └── UserRepository.kt        // 负责协调 remote, local, paging 数据源
+│   └── source/                      // 其他数据源/Mock数据
+│       └── JsonDataSource.kt        // 初始数据加载
+|
+├── domain/                          // 领域层：核心业务逻辑、模型和映射
+│   ├── model/                       // 领域模型
+│   │   ├── User.kt                  // App使用的核心业务模型
+│   │   ├── SortingMode.kt           // 业务枚举定义
+│   │   └── UserAction.kt            // 业务操作枚举
+│   └── mapper/                      // 数据转换逻辑
+│       └── UserMapper.kt            // DTO/Entity <-> User 转换逻辑
+├── viewmodel/                   // 业务逻辑状态持有者
+│   └── FollowingViewModel.kt    // 屏幕逻辑中心
+└── ui/                          // UI (Composable)
+    ├── main/
+    │   └── tabs/
+    │       ├── FollowingScreen.kt       // 关注列表主屏幕
+    │       ├── CustomRefreshIndicator.kt// 列表组件
+    │       └── MainScreen.kt            // 根屏幕/导航容器
+    └── components/              // 可复用、通用的 UI 组件
+        ├── UserActionBottomSheet.kt // 底部操作弹窗
+        ├── UserListItem.kt          // 单个列表项
+        ├── RemarkEditDialog.kt      // 备注编辑弹窗
+        └── CustomDialogs.kt         // 通用对话框
+```
