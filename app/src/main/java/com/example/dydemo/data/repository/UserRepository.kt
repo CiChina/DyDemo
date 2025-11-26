@@ -1,106 +1,70 @@
 package com.example.dydemo.data.repository
-/*
-重大修改。 25-11-25
-引入 Pager 对象。负责配置 Paging 3 的数据源 (PagingSource)，并提供一个返回 Flow<PagingData<User>> 的方法。
-职责从简单的数据库操作转向高效的数据流管理。
- */
+
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.map
 import com.example.dydemo.data.local.database.UserDao
+import com.example.dydemo.data.local.entity.UserEntity
+import com.example.dydemo.data.paging.LocalUserPagingSource
+import com.example.dydemo.domain.mapper.UserMapper.toUser
+import com.example.dydemo.domain.model.SortingMode
 import com.example.dydemo.domain.model.User
-import com.example.dydemo.domain.mapper.UserMapper
-import com.example.dydemo.data.source.JsonDataSource
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
-import com.example.dydemo.domain.model.SortingMode
+import kotlin.random.Random
 
-// 依赖注入：通过构造函数传入 UserDao
 class UserRepository @Inject constructor(
-    private val userDao: UserDao,
-    private val jsonDataSource: JsonDataSource
+    private val userDao: UserDao
 ) {
-    // 【修改】现在需要一个参数来确定使用哪个 DAO 方法
-    fun getFollowingList(mode: SortingMode): Flow<List<User>> {
-        val entityFlow = when (mode) {
-            SortingMode.COMPREHENSIVE -> userDao.getFollowingUsersByComprehensive()
-            SortingMode.TIME_ORDER -> userDao.getFollowingUsersByTime()
-        }
 
-        return entityFlow.map { entities ->
-            entities.map { entity ->
-                // UserEntity 转换为 User model 的逻辑保持不变
-                User(
-                    id = entity.id,
-                    nickname = entity.nickname,
-                    avatarResId = entity.avatarResId,
-                    authenticationLabelId = entity.authenticationLabelId,
-                    isSpecialFollow = entity.isSpecialFollow,
-                    isMutual = entity.isMutual,
-                    customRemark = entity.customRemark,
-                    followTimestamp = entity.followTimestamp,
-                )
-            }
+    fun getFollowingUsersStream(sortingMode: SortingMode): Flow<PagingData<User>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 20,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = { LocalUserPagingSource(userDao, sortingMode) }
+        ).flow.map { pagingData ->
+            pagingData.map { it.toUser() }
         }
     }
 
-    // 模拟初始数据（仅在第一次运行时插入）
+    fun getFollowingCount(): Flow<Int> = userDao.getFollowingCount()
+
     suspend fun initializeData() {
         if (userDao.countUsers() == 0) {
-            // 从 JSON 数据源获取初始数据
-            val initialUsers = jsonDataSource.getInitialUsers()
+            val random = Random(System.currentTimeMillis())
+            val initialUsers = (1..1000).map { i ->
+                UserEntity(
+                    id = i,
+                    nickname = "用户${random.nextInt(1000, 9999)}",
+                    avatarUrl = "https://picsum.photos/id/${i}/200/200",
+                    authenticationLabelId = 0,
+                    isMutual = random.nextBoolean(),
+                    isSpecialFollow = if (i <= 5) true else random.nextDouble() < 0.1,
+                    customRemark = if (random.nextDouble() < 0.2) "备注${i}" else null,
+                    followTimestamp = System.currentTimeMillis() - random.nextLong(1000L * 60 * 60 * 24 * 30)
+                )
+            }
             userDao.insertAll(initialUsers)
         }
     }
 
-    /**
-     * 从数据库获取关注列表，并将其转换为 UI 领域模型 (User) 的 Flow。
-     * 数据库更新时，此 Flow 会自动发射新数据。
-     */
-    fun getFollowingList(): Flow<List<User>> {
-        return userDao.getFollowingUsersByComprehensive().map { entities ->
-            UserMapper.mapFromEntityList(entities)
-        }
-    }
-
-    suspend fun toggleSpecialFollow(userId: Int) {
-        // 从数据库获取当前用户状态
-        val userEntity = userDao.getFollowingUsersByComprehensive().map { it.find { user -> user.id == userId } }.firstOrNull()
-
-        // 切换状态并更新数据库
-        userEntity?.let {
-            val updatedEntity = it.copy(isSpecialFollow = !it.isSpecialFollow)
-            userDao.update(updatedEntity)
-        }
-    }
-
     suspend fun setSpecialFollow(userId: Int, isSpecialFollow: Boolean) {
-        // 数据库操作：根据 isSpecialFollow 参数设置数据库中的状态
-        userDao.updateSpecialFollowStatus(userId, isSpecialFollow)
+        userDao.updateSpecialFollow(userId, isSpecialFollow)
+    }
+
+    suspend fun followUser(userId: Int) {
+        userDao.updateFollowTimestamp(userId, System.currentTimeMillis())
     }
 
     suspend fun unfollowUser(userId: Int) {
-        userDao.deleteById(userId)
+        userDao.updateFollowTimestamp(userId, null)
     }
 
-    suspend fun updateRemark(userId: Int, newRemark: String) {
-        val userEntity = userDao.getFollowingUsersByComprehensive().map { it.find { user -> user.id == userId } }.firstOrNull()
-
-        userEntity?.let {
-            val updatedEntity = it.copy(customRemark = newRemark)
-            userDao.update(updatedEntity)
-        }
-    }
-
-    /**
-     * 根据布尔状态更新用户的关注时间戳。
-     * @param userId 用户ID
-     * @param isFollowing true 表示关注 (设置时间戳)，false 表示取关 (清除时间戳)。
-     */
-    suspend fun updateFollowingStatus(userId: Int, isFollowing: Boolean) {
-        // 1. 将布尔状态转换为时间戳 Long?
-        val timestamp: Long? = if (isFollowing) System.currentTimeMillis() else null
-
-        // 2. 调用 UserDao 中我们新增的更新时间戳的方法
-        userDao.updateFollowTimestamp(userId, timestamp)
+    suspend fun updateRemark(userId: Int, newRemark: String?) {
+        userDao.updateRemark(userId, newRemark)
     }
 }

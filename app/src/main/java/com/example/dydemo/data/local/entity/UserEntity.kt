@@ -13,7 +13,7 @@ data class UserEntity(
     @PrimaryKey
     val id: Int,
     val nickname: String,
-    val avatarResId: Int,
+    val avatarUrl: String, // <--- 核心修改
     val authenticationLabelId: Int,
     val isMutual: Boolean,
     val isSpecialFollow: Boolean,

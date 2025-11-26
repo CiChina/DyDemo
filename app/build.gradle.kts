@@ -44,7 +44,7 @@ android {
 //        targetCompatibility = JavaVersion.VERSION_1_8
 //    }
 //    kotlin {
-//        // 【关键修改】使用 JVM Toolchain 统一版本
+//        // 使用 JVM Toolchain 统一版本
 //        jvmToolchain(11) // 推荐使用 JDK 17 (或 11)
 //    }
     kotlinOptions {
@@ -67,6 +67,8 @@ dependencies {
     implementation(libs.androidx.compose.foundation)
     implementation(libs.androidx.compose.ui.text)
     implementation(libs.play.services.cast.tv)
+    implementation(libs.androidx.paging.common)
+    implementation(libs.androidx.paging.compose)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -96,8 +98,11 @@ dependencies {
     // optional - Paging 3 Integration
     implementation("androidx.room:room-paging:$room_version")
     ksp("com.google.dagger:hilt-android-compiler:2.57.1")
-    // 如果您使用 Compose Navigation，建议添加这个，方便注入 ViewModel
+    // 使用 Compose Navigation，方便注入 ViewModel
     implementation(libs.hilt.navigation.compose)
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+
+    // 添加 Coil Compose 依赖
+    implementation("io.coil-kt:coil-compose:2.6.0")
 }

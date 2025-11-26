@@ -1,8 +1,9 @@
 package com.example.dydemo.domain.model
+
 /**
- * 业务枚举定义
+ * 定义关注列表的排序模式
  */
-enum class SortingMode {
-    COMPREHENSIVE, // 综合排序 (默认，按特关/ID)
-    TIME_ORDER    // 按时间顺序 (按关注时间)
+enum class SortingMode(val displayName: String) {
+    COMPREHENSIVE("综合排序"),
+    TIME_ORDER("按时间排序")
 }

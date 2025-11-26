@@ -2,172 +2,184 @@ package com.example.dydemo.ui.main.tabs
 
 import android.widget.Toast
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.List
-import androidx.compose.material3.*
+import androidx.compose.material.icons.filled.ArrowDropDown
+
+import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
-import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.painter.BitmapPainter
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.dydemo.domain.model.SortingMode
+import androidx.paging.LoadState
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
+import com.example.dydemo.R
 import com.example.dydemo.domain.model.User
+import com.example.dydemo.domain.model.UserAction
+import com.example.dydemo.ui.components.RemarkEditDialog
 import com.example.dydemo.ui.components.UserActionBottomSheet
 import com.example.dydemo.ui.components.UserListItem
 import com.example.dydemo.ui.theme.DY_MediumGray
-//import com.google.android.gms.cast.tv.cac.UserAction
-import com.example.dydemo.domain.model.UserAction
-import androidx.compose.material3.ExperimentalMaterial3Api
-import com.example.dydemo.ui.components.RemarkEditDialog
+import com.example.dydemo.ui.utils.getBitmapFromDrawable
 import com.example.dydemo.viewmodel.FollowingViewModel
 
-/**
- * 重大修改。 25-11-25
- * 放弃使用标准的 Column 或简单的 List 渲染。
- * 使用 Compose LazyColumn，并结合 Paging 3 提供的 collectAsLazyPagingItems() 来只渲染屏幕可见项。
- */
-
-// 必须使用 @OptIn 标记，因为 Pull-to-Refresh API 仍是 Material 3 的实验性部分
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FollowingScreen(
     viewModel: FollowingViewModel = hiltViewModel()
 ) {
+    val context = LocalContext.current
 
-    // 获取当前的 Context，用于显示 Toast 消息
-    val context = LocalContext.current // <--- 新增
-
-    val state by viewModel.uiState.collectAsState()
-    val scope = rememberCoroutineScope()
+    val lazyPagingItems: LazyPagingItems<User> = viewModel.followingUsersStream.collectAsLazyPagingItems()
+    val followingCount by viewModel.followingCount.collectAsState()
+    val sortingMode by viewModel.sortingMode.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
 
     var showActionDialog by remember { mutableStateOf(false) }
     var selectedUser by remember { mutableStateOf<User?>(null) }
-    var selectedUserId by remember { mutableStateOf<Int?>(null) }
 
-    // 1. 创建 PullToRefreshState
-    val pullToRefreshState = rememberPullToRefreshState()
-
-    // 首次初始化数据
-    LaunchedEffect(Unit) {
-        viewModel.initializeData() // <--- 这行代码负责数据的初始加载
-    }
-
-    // 列表为空时的处理逻辑 (保持不变)
-    if (state.followingUsers.isEmpty() && !state.isLoading) {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            Text("暂无关注", color = DY_MediumGray)
+    val placeholderPainter: Painter? = remember(R.drawable.rand_avatar_01) {
+        getBitmapFromDrawable(context, R.drawable.rand_avatar_01)?.let {
+            BitmapPainter(it.asImageBitmap())
         }
-        return // 如果为空且不加载，直接返回，避免渲染 PullToRefreshBox
     }
 
-    // 使用 PullToRefreshBox 包装 LazyColumn
     PullToRefreshBox(
-        isRefreshing = state.isLoading, // 从 ViewModel 中获取 isLoading 状态
-        onRefresh = viewModel::refreshData, // 下拉触发时，调用 ViewModel 的刷新逻辑
-        modifier = Modifier.fillMaxSize(),
-        state = pullToRefreshState,
-
-    ){
-        // 核心列表
-        LazyColumn(modifier = Modifier.fillMaxSize()) {
-            item {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween // 使得元素分散
-                ) {
-                    // 左侧：关注总数
-                    Text(
-                        text = "我的关注 (${state.followingUsers.size}人)",
-                        color = DY_MediumGray
-                    )
-
-                    // 【新增按钮】右侧：排序切换按钮
-                    Row(
-                        modifier = Modifier
-                            .clickable { viewModel.toggleSortingMode() } // <--- 切换排序模式
-                            .padding(horizontal = 8.dp, vertical = 4.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        val isTimeOrder = state.currentSortingMode == SortingMode.TIME_ORDER
-
-                        // 按钮文本
-                        Text(
-                            text = if (isTimeOrder) "按时间顺序" else "综合排序",
-                            color = DY_MediumGray,
-                            fontWeight = FontWeight.SemiBold,
-                            fontSize = 16.sp // 假设需要小一点的字体，需要导入 androidx.compose.ui.unit.sp
-                        )
-
-                        Spacer(Modifier.width(4.dp))
-
-                        // 排序图标 (o)
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.List, // <--- 使用 Sort 图标
-                            contentDescription = "切换排序",
-                            tint = DY_MediumGray,
-                            modifier = Modifier.size(16.dp)
-                        )
+        isRefreshing = lazyPagingItems.loadState.refresh is LoadState.Loading,
+        onRefresh = { lazyPagingItems.refresh() },
+        modifier = Modifier.fillMaxSize()
+    ) {
+        when (lazyPagingItems.loadState.refresh) {
+            is LoadState.Loading -> {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator()
+                }
+            }
+            is LoadState.Error -> {
+                val error = (lazyPagingItems.loadState.refresh as LoadState.Error).error
+                Box(modifier = Modifier.fillMaxSize().padding(16.dp), contentAlignment = Alignment.Center) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(text = "加载失败: ${error.localizedMessage}", color = MaterialTheme.colorScheme.error)
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Button(onClick = { lazyPagingItems.retry() }) {
+                            Text("重试")
+                        }
                     }
                 }
             }
-
-            items(state.followingUsers, key = { it.id }) { user ->
-                UserListItem(
-                    user = user,
-                    // 传递 pendingFollowActions Map
-                    pendingFollowActions = state.pendingFollowActions,
-                    onFollowToggle = viewModel::onFollowToggle,
-                    // 【Item 点击逻辑】
-                    onItemClick = { clickedUser ->
-                        // 1. 弹出 Toast
-                        val message = "已选中 ${clickedUser.nickname}"
-                        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-
-                        // 2. 这里通常是跳转到用户主页的逻辑
-                    },
-
-                    // 【“已关注”按钮点击逻辑】
-                    onFollowButtonClick = { clickedUser ->
-                        // 1. 触发 ViewModel 取消关注，Flow 会自动更新 UI，按钮颜色/文字会根据状态变化（假设您的FollowButton有状态）
-                        viewModel.onUnfollowUser(clickedUser.id)
-
-                        // 2. 可以给一个 Toast 提示
-                        val message = "已取消关注 ${clickedUser.nickname}"
-                        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-                    },
-
-                    // 【“···”省略号点击逻辑】
-                    onMoreOptionsClick = { clickedUser ->
-                        // 1. 选中用户并显示底部操作弹窗
-                        selectedUser = clickedUser
-                        showActionDialog = true
+            else -> {
+                if (lazyPagingItems.itemCount == 0 && lazyPagingItems.loadState.refresh is LoadState.NotLoading) {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        Text("暂无关注", color = DY_MediumGray)
                     }
-                )
-                Divider(
-                    color = DY_MediumGray.copy(alpha = 0.2f),
-                    thickness = 0.5.dp,
-                    modifier = Modifier.padding(start = 72.dp)
-                )
+                } else {
+                    LazyColumn(modifier = Modifier.fillMaxSize()) {
+                        item {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(16.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Text(
+                                    text = "我的关注 (${followingCount}人)",
+                                    color = DY_MediumGray
+                                )
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier.clickable { viewModel.toggleSortingMode() }
+                                ) {
+                                    Text(text = sortingMode.displayName, color = DY_MediumGray)
+                                    Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = "排序", tint = DY_MediumGray)
+                                }
+                            }
+                        }
+
+                        items(
+                            count = lazyPagingItems.itemCount,
+                            key = { index -> lazyPagingItems.peek(index)?.id ?: index }
+                        ) { index ->
+                            val user = lazyPagingItems[index]
+                            if (user != null) {
+                                UserListItem(
+                                    user = user,
+                                    pendingFollowActions = uiState.pendingFollowActions,
+                                    pendingRemarks = uiState.pendingRemarks,
+                                    pendingSpecialFollows = uiState.pendingSpecialFollows,
+                                    onFollowToggle = viewModel::onFollowToggle,
+                                    onItemClick = {
+                                        Toast.makeText(context, "选中了 ${it.nickname}", Toast.LENGTH_SHORT).show()
+                                    },
+                                    onMoreOptionsClick = {
+                                        selectedUser = it
+                                        showActionDialog = true
+                                    },
+                                    placeholder = placeholderPainter
+                                )
+                                HorizontalDivider(
+                                    color = DY_MediumGray.copy(alpha = 0.2f),
+                                    thickness = 0.5.dp,
+                                    modifier = Modifier.padding(start = 72.dp)
+                                )
+                            }
+                        }
+
+                        item {
+                            when (lazyPagingItems.loadState.append) {
+                                is LoadState.Loading -> {
+                                    Box(modifier = Modifier.fillMaxWidth().padding(16.dp), contentAlignment = Alignment.Center) {
+                                        CircularProgressIndicator()
+                                    }
+                                }
+                                is LoadState.Error -> {
+                                    Box(modifier = Modifier.fillMaxWidth().padding(16.dp), contentAlignment = Alignment.Center) {
+                                        Button(onClick = { lazyPagingItems.retry() }) {
+                                            Text("加载更多失败，点击重试")
+                                        }
+                                    }
+                                }
+                                else -> {}
+                            }
+                        }
+                    }
+                }
             }
         }
     }
 
-    // 备注编辑弹窗逻辑
-    state.userToEditRemark?.let { user ->
+    if (uiState.userToEditRemark != null) {
+        val user = uiState.userToEditRemark!!
         RemarkEditDialog(
             userNickname = user.nickname,
-            initialRemark = state.currentRemarkInput,
+            initialRemark = uiState.currentRemarkInput,
             onInputChange = viewModel::updateRemarkInput,
             onClearInput = viewModel::clearRemarkInput,
             onDismiss = viewModel::hideRemarkDialog,
@@ -175,23 +187,18 @@ fun FollowingScreen(
         )
     }
 
-
-    // 底部操作弹窗
     if (showActionDialog && selectedUser != null) {
         UserActionBottomSheet(
             user = selectedUser!!,
             onDismiss = { showActionDialog = false },
             viewModel = viewModel,
-            // 捕获备注编辑的点击事件
-            onOptionSelected = { actionType ->
-                // 不需要关闭 showActionDialog = false，因为它已经在 Sheet 内部调用 onDismiss() 了。
-                // 只需要在 Sheet 关闭后执行需要的操作。
-                when (actionType) {
-                    UserAction.REMARK_EDIT -> {
-                        // 触发 ViewModel 状态变化，从而显示 RemarkEditDialog
-                        viewModel.showRemarkDialog(selectedUser!!)
-                    }
-                    else -> { }
+            pendingRemarks = uiState.pendingRemarks,
+            pendingSpecialFollows = uiState.pendingSpecialFollows,
+            onOptionSelected = { action ->
+                if (action != UserAction.REMARK_EDIT) {
+                    lazyPagingItems.refresh()
+                } else {
+                    viewModel.showRemarkDialog(selectedUser!!)
                 }
             }
         )

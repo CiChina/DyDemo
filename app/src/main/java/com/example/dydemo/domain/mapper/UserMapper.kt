@@ -1,43 +1,60 @@
 package com.example.dydemo.domain.mapper
 
 import com.example.dydemo.data.local.entity.UserEntity
+import com.example.dydemo.data.remote.dto.UserDto
 import com.example.dydemo.domain.model.User
 
 /**
- * 负责 UserEntity (数据库) 和 User (UI 领域) 之间的相互转换
+ * 数据映射层（已简化）
+ * 负责在 DTO、Domain 和 Entity 之间进行直接的、一对一的字段映射。
  */
 object UserMapper {
 
-    // 从数据库实体转换为 UI 领域模型
-    fun mapFromEntity(entity: UserEntity): User {
+    /**
+     * 将网络数据传输对象 (UserDto) 转换为领域模型 (User)。
+     */
+    fun UserDto.toUser(): User {
         return User(
-            id = entity.id,
-            nickname = entity.nickname,
-            avatarResId = entity.avatarResId,
-            authenticationLabelId = entity.authenticationLabelId,
-            isMutual = entity.isMutual,
-            isSpecialFollow = entity.isSpecialFollow,
-            customRemark = entity.customRemark,
-            followTimestamp = entity.followTimestamp
+            id = this.id,
+            nickname = this.nickname,
+            avatarUrl = this.avatarUrl, // 直接传递 URL
+            authenticationLabelId = this.authenticationLabelId,
+            isMutual = this.isMutual,
+            isSpecialFollow = this.isSpecialFollow,
+            customRemark = this.customRemark,
+            followTimestamp = this.followTimestamp
         )
     }
 
-    // 从 UI 领域模型转换为数据库实体
-    fun mapToEntity(user: User): UserEntity {
+    /**
+     * 将领域模型 (User) 转换为数据库实体 (UserEntity)。
+     */
+    fun User.toEntity(): UserEntity {
         return UserEntity(
-            id = user.id,
-            nickname = user.nickname,
-            avatarResId = user.avatarResId,
-            authenticationLabelId = user.authenticationLabelId,
-            isMutual = user.isMutual,
-            isSpecialFollow = user.isSpecialFollow,
-            customRemark = user.customRemark,
-            followTimestamp = user.followTimestamp,
+            id = this.id,
+            nickname = this.nickname,
+            avatarUrl = this.avatarUrl, // 直接传递 URL
+            authenticationLabelId = this.authenticationLabelId,
+            isMutual = this.isMutual,
+            isSpecialFollow = this.isSpecialFollow,
+            customRemark = this.customRemark,
+            followTimestamp = this.followTimestamp
         )
     }
 
-    // 列表转换的辅助函数
-    fun mapFromEntityList(entities: List<UserEntity>): List<User> {
-        return entities.map { mapFromEntity(it) }
+    /**
+     * 将数据库实体 (UserEntity) 转换为领域模型 (User)。
+     */
+    fun UserEntity.toUser(): User {
+        return User(
+            id = this.id,
+            nickname = this.nickname,
+            avatarUrl = this.avatarUrl, // 直接传递 URL
+            authenticationLabelId = this.authenticationLabelId,
+            isMutual = this.isMutual,
+            isSpecialFollow = this.isSpecialFollow,
+            customRemark = this.customRemark,
+            followTimestamp = this.followTimestamp
+        )
     }
 }

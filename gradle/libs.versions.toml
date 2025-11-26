@@ -14,7 +14,9 @@ hilt = "2.57.1"           # Hilt 依赖注入版本 (与 AGP 8.x 兼容)
 hiltNavigationCompose = "1.2.0"
 foundation = "1.9.4"
 uiText = "1.9.5"
-playServicesCastTv = "21.1.1" # 如果使用 Navigation Compose，也需要这个
+playServicesCastTv = "21.1.1"
+pagingCommon = "3.3.6"
+pagingCompose = "3.3.6" # 如果使用 Navigation Compose，也需要这个
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -44,6 +46,8 @@ hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-com
 androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "foundation" }
 androidx-compose-ui-text = { group = "androidx.compose.ui", name = "ui-text", version.ref = "uiText" }
 play-services-cast-tv = { group = "com.google.android.gms", name = "play-services-cast-tv", version.ref = "playServicesCastTv" }
+androidx-paging-common = { group = "androidx.paging", name = "paging-common", version.ref = "pagingCommon" }
+androidx-paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "pagingCompose" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
