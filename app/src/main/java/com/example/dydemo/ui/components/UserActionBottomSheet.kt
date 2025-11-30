@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
@@ -50,7 +51,8 @@ fun UserActionBottomSheet(
     viewModel: FollowingViewModel,
     pendingRemarks: Map<Int, String?>,  // 保存关注状态的中间存储内容
     pendingSpecialFollows: Map<Int, Boolean>, // 保存特别关注状态的中间存储内容
-    onOptionSelected: (UserAction) -> Unit
+    onOptionSelected: (UserAction) -> Unit,
+    placeholder: Painter?
 ) {
     val displayRemark = if (pendingRemarks.containsKey(user.id)) pendingRemarks[user.id] else user.customRemark
 
@@ -113,6 +115,8 @@ fun UserActionBottomSheet(
                     model = user.avatarUrl,
                     contentDescription = "用户头像",
                     contentScale = ContentScale.Crop,
+                    placeholder = placeholder,
+                    error = placeholder,
                     modifier = Modifier
                         .size(80.dp)
                         .clip(CircleShape)

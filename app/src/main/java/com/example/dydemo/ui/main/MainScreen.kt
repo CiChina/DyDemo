@@ -99,7 +99,7 @@ fun CustomTabBar(pages: Array<TabPage>, pagerState: PagerState) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 48.dp), // 顶部填充，留出空间
+                .padding(top = 32.dp), // 顶部填充，留出空间
             horizontalArrangement = Arrangement.Center, // 文本和指示器组居中排列
             verticalAlignment = Alignment.CenterVertically
         ) {

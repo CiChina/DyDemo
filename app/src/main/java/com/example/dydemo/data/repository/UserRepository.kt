@@ -20,9 +20,12 @@ class UserRepository @Inject constructor(
 ) {
 
     fun getFollowingUsersStream(sortingMode: SortingMode): Flow<PagingData<User>> {
+        val pageSize = 20
         return Pager(
             config = PagingConfig(
-                pageSize = 20,
+                pageSize = pageSize,
+                prefetchDistance = 1,
+                initialLoadSize = pageSize,
                 enablePlaceholders = false
             ),
             pagingSourceFactory = { LocalUserPagingSource(userDao, sortingMode) }
@@ -33,14 +36,18 @@ class UserRepository @Inject constructor(
 
     fun getFollowingCount(): Flow<Int> = userDao.getFollowingCount()
 
-    suspend fun initializeData() {
+    /**
+     * 【核心修改】改为suspend函数，并返回是否执行了初始化操作
+     */
+    suspend fun initializeData(): Boolean {
         if (userDao.countUsers() == 0) {
             val random = Random(System.currentTimeMillis())
             val initialUsers = (1..1000).map { i ->
                 UserEntity(
                     id = i,
-                    nickname = "用户${random.nextInt(1000, 9999)}",
-                    avatarUrl = "https://picsum.photos/id/${i}/200/200",
+                    nickname = "用户${random.nextInt(666, 6666)}",
+//                    avatarUrl = "https://picsum.photos/id/${i}/64/64.webp",  // 减小图片尺寸，修改格式
+                    avatarUrl = "https://loremflickr.com/64/64/face?lock=${i}",
                     authenticationLabelId = 0,
                     isMutual = random.nextBoolean(),
                     isSpecialFollow = if (i <= 5) true else random.nextDouble() < 0.1,
@@ -49,7 +56,9 @@ class UserRepository @Inject constructor(
                 )
             }
             userDao.insertAll(initialUsers)
+            return true
         }
+        return false
     }
 
     suspend fun setSpecialFollow(userId: Int, isSpecialFollow: Boolean) {

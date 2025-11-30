@@ -3,6 +3,7 @@ package com.example.dydemo.ui.components
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -16,13 +17,17 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -70,12 +75,17 @@ fun UserListItem(
         else -> "关注"
     }
 
-    val containerColor = if (currentIsFollowing) DY_InputBackground else DY_PrimaryRed
-    val contentColor = if (currentIsFollowing) DY_LightGray else DY_White
+    val containerColor = if (currentIsFollowing) MaterialTheme.colorScheme.surfaceVariant else DY_PrimaryRed
+    val contentColor = if (currentIsFollowing) MaterialTheme.colorScheme.onSurfaceVariant else DY_White  // 按钮文本颜色
 
     val isSpecialFollow = pendingSpecialFollows[user.id] ?: user.isSpecialFollow
 
     val context = LocalContext.current
+
+    // --- Smart Image Fallback Logic ---
+    var imageUrl by remember(user.avatarUrl) { mutableStateOf(user.avatarUrl) }
+    var hasFailed by remember(user.avatarUrl) { mutableStateOf(false) }
+    val fallbackUrl = remember(user.id) { "https://picsum.photos/id/${user.id + 10000}/200/200.webp" }
 
     Row(
         modifier = Modifier
@@ -85,7 +95,7 @@ fun UserListItem(
         verticalAlignment = Alignment.CenterVertically
     ) {
         AsyncImage(
-            model = user.avatarUrl,
+            model = imageUrl,
             contentDescription = "用户头像",
             modifier = Modifier
                 .size(64.dp)
@@ -93,7 +103,13 @@ fun UserListItem(
                 .background(MaterialTheme.colorScheme.surface),
             contentScale = ContentScale.Crop,
             placeholder = placeholder,
-            error = placeholder
+            error = placeholder, // Show placeholder on final failure
+            onError = {
+                if (!hasFailed) {
+                    hasFailed = true
+                    imageUrl = fallbackUrl
+                }
+            }
         )
 
         Spacer(modifier = Modifier.width(12.dp))
@@ -135,7 +151,7 @@ fun UserListItem(
             ),
             modifier = Modifier
                 .width(88.dp)
-                .alpha(if (isPending) 0.8f else 1.0f)
+                .alpha(if (isPending) 1.0f else 1.0f)
         ) {
             Text(
                 text = displayButtonText,
@@ -152,7 +168,10 @@ fun UserListItem(
             modifier = Modifier
                 .size(24.dp)
                 .graphicsLayer { rotationZ = 90f }
-                .clickable {
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null
+                ) {
                     val isFollowed = pendingState ?: (user.followTimestamp != null)
                     if (isFollowed) {
                         onMoreOptionsClick(user)

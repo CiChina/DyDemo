@@ -23,6 +23,9 @@ class FollowingViewModel @Inject constructor(
     private val userRepository: UserRepository
 ) : ViewModel() {
 
+    private val _isInitializing = MutableStateFlow(true)
+    val isInitializing: StateFlow<Boolean> = _isInitializing.asStateFlow()
+
     private val _sortingMode = MutableStateFlow(SortingMode.COMPREHENSIVE)
     val sortingMode: StateFlow<SortingMode> = _sortingMode.asStateFlow()
 
@@ -39,15 +42,10 @@ class FollowingViewModel @Inject constructor(
     val followingCount: StateFlow<Int> = _followingCount.asStateFlow()
 
     init {
-        initializeData()
-        viewModelScope.launch {
-            _followingCount.value = userRepository.getFollowingCount().first()
-        }
-    }
-
-    private fun initializeData() {
         viewModelScope.launch {
             userRepository.initializeData()
+            _followingCount.value = userRepository.getFollowingCount().first()
+            _isInitializing.value = false
         }
     }
 

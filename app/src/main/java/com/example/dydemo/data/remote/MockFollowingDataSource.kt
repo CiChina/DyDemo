@@ -41,7 +41,7 @@ class MockFollowingDataSource @Inject constructor() : FollowingApiService {
                         // authenticationLabelId 使用 0 作为占位符，表示没有认证图标
                         authenticationLabelId = 0,
                         isMutual = i % 5 == 0,
-                        isSpecialFollow = i % 20 == 0,
+                        isSpecialFollow = i % 50 == 0,
                         customRemark = if (i % 30 == 0) "我的好友 $i" else null,
                         // 时间戳递减，模拟关注时间的先后顺序
                         followTimestamp = currentTime - (1000 - i) * 1000 * 60 * 5

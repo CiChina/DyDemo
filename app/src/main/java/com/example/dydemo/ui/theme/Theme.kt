@@ -27,6 +27,9 @@ private val DyDarkColorScheme = darkColorScheme(
     surface = DY_InputBackground,
     onSurface = DY_LightGray,
 
+    surfaceVariant = DY_InputBackground,
+    onSurfaceVariant = DY_LightGray,
+
     // 次要颜色 (可选，但推荐填充，保持 DY 风格)
     secondary = DY_MediumGray,
     onSecondary = DY_White,
@@ -47,6 +50,9 @@ private val DyLightColorScheme = lightColorScheme(
 
     surface = Color(0xFFF0F0F0),
     onSurface = DY_MediumGray,        // 表面上的文本色
+
+    surfaceVariant = DY_LightGray,
+    onSurfaceVariant = DY_InputBackground,
 
     // 次要颜色
     secondary = DY_MediumGray,
