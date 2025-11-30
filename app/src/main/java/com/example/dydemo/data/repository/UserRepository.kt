@@ -24,9 +24,9 @@ class UserRepository @Inject constructor(
         return Pager(
             config = PagingConfig(
                 pageSize = pageSize,
-                prefetchDistance = 0,
+                prefetchDistance = 1,
                 initialLoadSize = pageSize,
-                enablePlaceholders = true
+                enablePlaceholders = false
             ),
             pagingSourceFactory = { LocalUserPagingSource(userDao, sortingMode) }
         ).flow.map { pagingData ->
