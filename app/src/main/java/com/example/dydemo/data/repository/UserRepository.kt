@@ -20,13 +20,13 @@ class UserRepository @Inject constructor(
 ) {
 
     fun getFollowingUsersStream(sortingMode: SortingMode): Flow<PagingData<User>> {
-        val pageSize = 20
+        val pageSize = 10  // 每次加载10条数据
         return Pager(
             config = PagingConfig(
                 pageSize = pageSize,
-                prefetchDistance = 1,
+                prefetchDistance = 0,
                 initialLoadSize = pageSize,
-                enablePlaceholders = false
+                enablePlaceholders = true
             ),
             pagingSourceFactory = { LocalUserPagingSource(userDao, sortingMode) }
         ).flow.map { pagingData ->
@@ -37,7 +37,7 @@ class UserRepository @Inject constructor(
     fun getFollowingCount(): Flow<Int> = userDao.getFollowingCount()
 
     /**
-     * 【核心修改】改为suspend函数，并返回是否执行了初始化操作
+     * 改为suspend函数，并返回是否执行了初始化操作
      */
     suspend fun initializeData(): Boolean {
         if (userDao.countUsers() == 0) {
