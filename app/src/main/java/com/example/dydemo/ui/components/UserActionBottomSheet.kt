@@ -64,7 +64,7 @@ fun UserActionBottomSheet(
         }
     }
     val hasRemark = !displayRemark.isNullOrBlank()
-
+    // 实时更新的用户信息显示内容
     val subtitleText = remember(hasRemark, user.nickname, user.id, user.followTimestamp) {
         val followTimeText = user.followTimestamp?.let { timestamp ->
             "关注时间: ${formatTimestamp(timestamp)}"
@@ -216,6 +216,7 @@ fun UserActionBottomSheet(
     }
 }
 
+// 普通的bar，包括取关和设置备注按钮，可复用
 @Composable
 private fun ActionItem(
     icon: ImageVector,
@@ -244,6 +245,7 @@ private fun ActionItem(
     }
 }
 
+// 特别关注switch bar
 @Composable
 private fun SpecialFollowItem(
     user: User,

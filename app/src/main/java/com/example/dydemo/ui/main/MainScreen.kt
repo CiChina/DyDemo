@@ -139,7 +139,7 @@ fun CustomTabBar(pages: Array<TabPage>, pagerState: PagerState) {
             Spacer(Modifier.width(48.dp)) // 右侧占位
         }
 
-        // 【全局细线】 (Divider)
+        // 全局细线
         // 放置在 Tab 文本和指示器 Row 的正下方
         Divider(
             modifier = Modifier

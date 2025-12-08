@@ -37,7 +37,7 @@ class UserRepository @Inject constructor(
     fun getFollowingCount(): Flow<Int> = userDao.getFollowingCount()
 
     /**
-     * 改为suspend函数，并返回是否执行了初始化操作
+     * 改为suspend协程函数，并返回是否执行了初始化操作
      */
     suspend fun initializeData(): Boolean {
         if (userDao.countUsers() == 0) {

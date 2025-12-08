@@ -70,17 +70,20 @@ fun FollowingScreen(
         }
     }
 
+    // 带有下拉刷新功能的list
     PullToRefreshBox(
         isRefreshing = lazyPagingItems.loadState.refresh is LoadState.Loading,
         onRefresh = { lazyPagingItems.refresh() },
         modifier = Modifier.fillMaxSize()
     ) {
+        // 分页加载功能
         when (lazyPagingItems.loadState.refresh) {
             is LoadState.Loading -> {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     CircularProgressIndicator()
                 }
             }
+            // 分页加载失败的重试机制
             is LoadState.Error -> {
                 val error = (lazyPagingItems.loadState.refresh as LoadState.Error).error
                 Box(modifier = Modifier.fillMaxSize().padding(16.dp), contentAlignment = Alignment.Center) {
@@ -93,14 +96,18 @@ fun FollowingScreen(
                     }
                 }
             }
+            // 分页加载成功
             else -> {
+                // 空列表
                 if (lazyPagingItems.itemCount == 0 && lazyPagingItems.loadState.refresh is LoadState.NotLoading) {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         Text("暂无关注", color = DY_MediumGray)
                     }
                 } else {
+                    // 利用lazy column 构建关注用户list
                     LazyColumn(modifier = Modifier.fillMaxSize()) {
                         item {
+                            // 上方左侧显示关注人数，右侧显示排序模式
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -114,7 +121,7 @@ fun FollowingScreen(
                                 )
                                 Row(
                                     verticalAlignment = Alignment.CenterVertically,
-                                    modifier = Modifier.clickable { viewModel.toggleSortingMode() }
+                                    modifier = Modifier.clickable { viewModel.toggleSortingMode() } // 点击切换排序模式
                                 ) {
                                     Text(text = sortingMode.displayName, color = DY_MediumGray)
                                     Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = "排序", tint = DY_MediumGray)
@@ -128,12 +135,14 @@ fun FollowingScreen(
                         ) { index ->
                             val user = lazyPagingItems[index]
                             if (user != null) {
+                                // 调用用户item 构建UI
                                 UserListItem(
                                     user = user,
                                     pendingFollowActions = uiState.pendingFollowActions,
                                     pendingRemarks = uiState.pendingRemarks,
                                     pendingSpecialFollows = uiState.pendingSpecialFollows,
                                     onFollowToggle = viewModel::onFollowToggle,
+                                    // 点击弹出toast
                                     onItemClick = {
                                         Toast.makeText(context, "选中了 ${it.nickname}", Toast.LENGTH_SHORT).show()
                                     },
@@ -143,6 +152,7 @@ fun FollowingScreen(
                                     },
                                     placeholder = placeholderPainter
                                 )
+                                // 每个用户之间的细线
                                 HorizontalDivider(
                                     color = DY_MediumGray.copy(alpha = 0.2f),
                                     thickness = 0.5.dp,
@@ -150,7 +160,7 @@ fun FollowingScreen(
                                 )
                             }
                         }
-
+                        // 下拉到最下面，加载更多，paging加载
                         item {
                             when (lazyPagingItems.loadState.append) {
                                 is LoadState.Loading -> {
@@ -174,6 +184,7 @@ fun FollowingScreen(
         }
     }
 
+    // 弹出备注窗口
     if (uiState.userToEditRemark != null) {
         val user = uiState.userToEditRemark!!
         RemarkEditDialog(
@@ -186,6 +197,7 @@ fun FollowingScreen(
         )
     }
 
+    // 按下更多按钮展示下拉菜单
     if (showActionDialog && selectedUser != null) {
         UserActionBottomSheet(
             user = selectedUser!!,

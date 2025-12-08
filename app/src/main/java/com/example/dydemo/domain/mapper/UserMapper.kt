@@ -5,7 +5,7 @@ import com.example.dydemo.data.remote.dto.UserDto
 import com.example.dydemo.domain.model.User
 
 /**
- * 数据映射层（已简化）
+ * 数据映射层
  * 负责在 DTO、Domain 和 Entity 之间进行直接的、一对一的字段映射。
  */
 object UserMapper {

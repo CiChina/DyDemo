@@ -41,6 +41,7 @@ class FollowingViewModel @Inject constructor(
     private val _followingCount = MutableStateFlow(0)
     val followingCount: StateFlow<Int> = _followingCount.asStateFlow()
 
+    // 初始化，提供1000个用户信息，来自room
     init {
         viewModelScope.launch {
             userRepository.initializeData()
@@ -49,6 +50,7 @@ class FollowingViewModel @Inject constructor(
         }
     }
 
+    // 按下关注状态按钮
     fun onFollowToggle(userId: Int, isCurrentlyFollowing: Boolean) {
         val newFollowingState = !isCurrentlyFollowing
 
@@ -74,12 +76,14 @@ class FollowingViewModel @Inject constructor(
         }
     }
 
+    // 按下排序模式按钮
     fun toggleSortingMode() {
         _sortingMode.update {
             if (it == SortingMode.COMPREHENSIVE) SortingMode.TIME_ORDER else SortingMode.COMPREHENSIVE
         }
     }
 
+    // 按下特别关注switch
     fun onToggleSpecialFollow(userId: Int, isChecked: Boolean) {
         _uiState.update {
             val newPendingSpecialFollows = it.pendingSpecialFollows.toMutableMap().apply {
@@ -93,6 +97,7 @@ class FollowingViewModel @Inject constructor(
         }
     }
 
+    // 按下设置备注按钮，展示弹窗
     fun showRemarkDialog(user: User) {
         _uiState.update {
             it.copy(
@@ -102,14 +107,17 @@ class FollowingViewModel @Inject constructor(
         }
     }
 
+    // 按下弹窗确认键，更新备注
     fun updateRemarkInput(newInput: String) {
         _uiState.update { it.copy(currentRemarkInput = newInput) }
     }
 
+    // 按下弹窗的清除按钮，清除当前输入的备注
     fun clearRemarkInput() {
         _uiState.update { it.copy(currentRemarkInput = "") }
     }
 
+    // 按下取消按钮，关闭弹窗
     fun hideRemarkDialog() {
         _uiState.update {
             it.copy(
@@ -119,6 +127,7 @@ class FollowingViewModel @Inject constructor(
         }
     }
 
+    // 按下保存按钮，关闭弹窗，并更新备注
     fun saveRemark() {
         val user = _uiState.value.userToEditRemark ?: return
         val newRemark = _uiState.value.currentRemarkInput.trim()

@@ -52,7 +52,7 @@ object CoilModule {
 }
 
 /**
- * A robust interceptor that retries on both unsuccessful HTTP responses AND network I/O exceptions.
+ * 重新加载的机制
  */
 private class RobustRetryInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
@@ -81,8 +81,6 @@ private class RobustRetryInterceptor : Interceptor {
             }
         }
 
-        // If we're here, all retries have failed.
-        // Throw the last-captured exception, or a generic one.
-        throw exception ?: IOException("Image request failed after $maxRetries retries")
+        throw exception ?: IOException("在 $maxRetries 次重试后，加载失败")
     }
 }

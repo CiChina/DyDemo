@@ -12,7 +12,7 @@ import javax.inject.Singleton
 class JsonDataSource @Inject constructor(
     private val application: Application // 注入 Application 上下文以访问 assets
 ) {
-    // 惰性解析 JSON 数据，配置忽略未知键
+    // 解析 JSON 数据，配置忽略未知键
     private val json = Json { ignoreUnknownKeys = true; isLenient = true }
 
     // 从 assets 文件夹读取文件内容

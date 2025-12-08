@@ -60,6 +60,7 @@ fun UserListItem(
     val pendingRemark = pendingRemarks[user.id]
     val displayRemark = if (pendingRemarks.containsKey(user.id)) pendingRemark else user.customRemark
 
+    // 定义可观察状态
     val displayName = remember(displayRemark, user.nickname) {
         if (!displayRemark.isNullOrBlank()) displayRemark else user.nickname
     }
@@ -69,6 +70,7 @@ fun UserListItem(
     val currentIsFollowing = pendingState ?: (user.followTimestamp != null)
     val isPending = pendingState != null
 
+    // 关注状态按钮的文本
     val displayButtonText = when {
         currentIsFollowing && user.isMutual && !isPending -> "互相关注"
         currentIsFollowing -> "已关注"
@@ -82,9 +84,10 @@ fun UserListItem(
 
     val context = LocalContext.current
 
-    // --- Smart Image Fallback Logic ---
+    // 加载图片的逻辑
     var imageUrl by remember(user.avatarUrl) { mutableStateOf(user.avatarUrl) }
     var hasFailed by remember(user.avatarUrl) { mutableStateOf(false) }
+    // 加载失败之后提供默认URL
     val fallbackUrl = remember(user.id) { "https://picsum.photos/id/${user.id + 10000}/200/200.webp" }
 
     Row(
@@ -119,6 +122,7 @@ fun UserListItem(
                 .weight(1f)
                 .align(Alignment.CenterVertically)
         ) {
+            // 展示用户昵称（有备注优先展示备注）
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     text = displayName,
@@ -141,6 +145,7 @@ fun UserListItem(
             }
         }
 
+        // 关注状态按钮
         Button(
             onClick = { onFollowToggle(user.id, currentIsFollowing) },
             shape = RoundedCornerShape(4.dp),
@@ -161,6 +166,7 @@ fun UserListItem(
         }
         Spacer(modifier = Modifier.width(12.dp))
 
+        // 更多按钮，弹出拉下窗口
         Icon(
             imageVector = Icons.Filled.MoreVert,
             contentDescription = "更多操作",

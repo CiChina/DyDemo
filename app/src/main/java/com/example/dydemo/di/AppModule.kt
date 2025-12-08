@@ -21,7 +21,6 @@ abstract class AppModule {
 
     /**
      * 将 MockFollowingDataSource 绑定到 FollowingApiService 接口。
-     * 在生产环境中，这里应绑定 Retrofit 实现。
      */
     @Singleton
     @Binds

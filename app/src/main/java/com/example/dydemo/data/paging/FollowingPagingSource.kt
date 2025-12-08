@@ -51,10 +51,10 @@ class FollowingPagingSource @Inject constructor(
                 nextKey = if (userList.isEmpty()) null else page + 1
             )
         } catch (e: IOException) {
-            // IOException 表示可能存在网络问题
+            // IOException 可能存在网络问题
             LoadResult.Error(e)
         } catch (e: HttpException) {
-            // HttpException 表示非 2xx 的 HTTP 响应
+            // HttpException 非 2xx 的 HTTP 响应
             LoadResult.Error(e)
         }
     }
